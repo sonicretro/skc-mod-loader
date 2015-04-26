@@ -327,7 +327,7 @@ static void ProcessLevelINI(const IniGroup *group, const wstring &mod_dir)
 		else
 			lb->TilesSecondary = lb->TilesPrimary;
 	}
-	lb->Pal2 = lb->Pal1 = (uint8_t)group->getIntRadix("palette", 16, lb->Pal1);
+	lb->Pal2 = lb->Pal1 = (uint8_t)group->getInt("palette", lb->Pal1);
 	if (group->hasKeyNonEmpty("blocks1"))
 	{
 		void *tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("blocks1"));
