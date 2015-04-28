@@ -249,10 +249,10 @@ struct PLC
 
 struct LoadBlock
 {
-	uint8_t PLC1, PLC2;
+	uint16_t PLC1, PLC2;
 	const void *TilesPrimary;
 	const void *TilesSecondary;
-	uint8_t Pal1, Pal2;
+	uint16_t Pal1, Pal2;
 	const void *BlocksPrimary;
 	const void *BlocksSecondary;
 	const void *ChunksPrimary;

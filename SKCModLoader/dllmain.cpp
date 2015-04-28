@@ -314,8 +314,8 @@ static void ProcessLevelINI(const IniGroup *group, const wstring &mod_dir)
 	LoadBlock *lb = &LevelLoadBlock[li];
 	if (group->hasKeyNonEmpty("plc1"))
 	{
-		lb->PLC1 = (uint8_t)group->getIntRadix("plc1", 16);
-		lb->PLC2 = (uint8_t)group->getIntRadix("plc2", 16, lb->PLC1);
+		lb->PLC1 = (uint16_t)group->getIntRadix("plc1", 16);
+		lb->PLC2 = (uint16_t)group->getIntRadix("plc2", 16, lb->PLC1);
 	}
 	if (group->hasKeyNonEmpty("tiles1"))
 	{
@@ -650,7 +650,10 @@ extern "C" __declspec(dllexport) void *GetMidiInterface()
 {
 	HMODULE midimodule = LoadLibrary(_T("MIDIOUT_orig.DLL"));
 	if (midimodule)
+	{
+		InitMods();
 		return ((void *(*)())GetProcAddress(midimodule, "GetMidiInterface"))();
+	}
 	else
 	{
 		MessageBox(NULL, L"MIDIOUT_orig.dll could not be loaded!\n\n"
@@ -658,7 +661,6 @@ extern "C" __declspec(dllexport) void *GetMidiInterface()
 			L"S&KC Mod Loader", MB_ICONERROR);
 		ExitProcess(1);
 	}
-	InitMods();
 }
 
 /**
