@@ -358,13 +358,21 @@ static void ProcessLevelINI(const IniGroup *group, const wstring &mod_dir)
 	{
 		void *tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("objects"));
 		if (tmp)
-			SpriteLocPtrs3[li] = SpriteLocPtrs[li] = tmp;
+			SpriteLocPtrs[li] = tmp;
+		if (group->hasKeyNonEmpty("objects3") && (tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("objects3"))))
+			SpriteLocPtrs3[li] = tmp;
+		else
+			SpriteLocPtrs3[li] = SpriteLocPtrs[li];
 	}
 	if (group->hasKeyNonEmpty("rings"))
 	{
 		void *tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("rings"));
 		if (tmp)
-			RingLocPtrs3[li] = RingLocPtrs[li] = tmp;
+			RingLocPtrs[li] = tmp;
+		if (group->hasKeyNonEmpty("rings3") && (tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("rings3"))))
+			RingLocPtrs3[li] = tmp;
+		else
+			RingLocPtrs3[li] = RingLocPtrs[li];
 	}
 	if (group->hasKeyNonEmpty("sonicstart"))
 	{
