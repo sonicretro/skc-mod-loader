@@ -35,13 +35,23 @@ static CodeParser codeParser;
 
 static vector<ModFrameFunc> modFrameFuncs;
 
-FunctionPointer(void, sub_403101, (void*), 0x403101);
-static void __cdecl ProcessCodes(void *arg)
+static void __cdecl ProcessCodes_i()
 {
 	codeParser.processCodeList();
 	for (unsigned int i = 0; i < modFrameFuncs.size(); i++)
 		modFrameFuncs[i]();
-	sub_403101(arg);
+}
+
+ThiscallFunctionPointer(void, sub_403101, (void*), 0x403101);
+__declspec(naked) void ProcessCodes()
+{
+	__asm
+	{
+		push ecx
+		call ProcessCodes_i
+		pop ecx
+		jmp sub_403101
+	}
 }
 
 static bool dbgConsole;
