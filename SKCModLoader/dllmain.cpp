@@ -582,18 +582,18 @@ static void __cdecl InitMods(void)
 		for (size_t i = 0; i < PLCList.size(); i++)
 			memsz += PLCList[i].size() * 6;
 		void *buf = new char[memsz];
-		uint16_t off = PLCList.size() * 2;
+		uint16_t off = (uint16_t)PLCList.size() * 2;
 		uint16_t *offptr = (uint16_t *)buf;
 		for (size_t i = 0; i < PLCList.size(); i++)
 		{
 			*offptr++ = off;
-			off += (PLCList[i].size() * 6) + 2;
+			off += ((uint16_t)PLCList[i].size() * 6) + 2;
 		}
 		uint16_t *cntptr = offptr;
 		PLC *plcptr = nullptr;
 		for (size_t i = 0; i < PLCList.size(); i++)
 		{
-			*cntptr++ = PLCList[i].size() - 1;
+			*cntptr++ = (uint16_t)PLCList[i].size() - 1;
 			plcptr = (PLC *)cntptr;
 			for (size_t j = 0; j < PLCList[i].size(); j++)
 				*plcptr++ = PLCList[i][j];
