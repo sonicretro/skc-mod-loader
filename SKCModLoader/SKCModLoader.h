@@ -271,6 +271,19 @@ struct PalPtr
 	uint16_t Size;
 };
 
+union MDReg
+{
+	char Byte;
+	short Word;
+	int Long;
+};
+
+struct Controller
+{
+	char Held;
+	char Press;
+};
+
 // Data pointer and array declarations.
 #define DataPointer(type, name, address) \
 	static type &name = *(type *)address
@@ -281,12 +294,52 @@ DataArray(LoadBlock, LevelLoadBlock, 0x431DC8, 48);
 DataArray(void *, SolidIndexes, 0x64EFB4, 48);
 DataArray(void *, LevelPtrs, 0x65AA74, 48);
 DataArray(PalPtr, PalPoint, 0x6704A6, 66);
+DataArray(void *, SSLayoutOffs_RAM, 0x69E3DF, 8);
+DataArray(void *, SS_Pal_Map_Ptrs, 0x69EF32, 46);
 DataArray(void *, SpriteLocPtrs, 0x7F762C, 48);
 DataArray(void *, RingLocPtrs, 0x7F76EC, 48);
 DataArray(void *, SpriteLocPtrs3, 0x7F790C, 48);
 DataArray(void *, RingLocPtrs3, 0x7F79CC, 48);
 DataArray(StartPos, Sonic_Start_Locations, 0x7F7B24, 48);
 DataArray(StartPos, Knux_Start_Locations, 0x7F7BE4, 48);
+DataArray(void *, SStageLayoutPtrs, 0x7F80F8, 8);
+DataArray(void *, SSCompressedLayoutPointers, 0x7FA156, 2);
+DataPointer(void *, reg_a0, 0x8547C0);
+DataPointer(void *, reg_a1, 0x8547C8);
+DataPointer(void *, reg_a2, 0x8547CC);
+DataPointer(void *, reg_a3, 0x8547D0);
+DataPointer(void *, reg_a4, 0x8547D4);
+DataPointer(void *, reg_a5, 0x854998);
+DataPointer(void *, reg_a6, 0x85499C);
+DataPointer(MDReg, reg_d0, 0x8549A4);
+DataPointer(MDReg, reg_d1, 0x8549A8);
+DataPointer(MDReg, reg_d2, 0x8549AC);
+DataPointer(MDReg, reg_d3, 0x8549B0);
+DataPointer(MDReg, reg_d4, 0x8549B4);
+DataPointer(MDReg, reg_d5, 0x8549B8);
+DataPointer(MDReg, reg_d6, 0x8549BC);
+DataPointer(MDReg, reg_d7, 0x8549C0);
+DataArray(char, RAM_start, 0x8FF0000, 1);
+DataArray(short, Target_water_palette, 0x8FFF000, 64);
+DataArray(char, Plane_buffer, 0x8FFF100, 1);
+DataArray(short, Normal_palette, 0x8FFFC00, 64);
+DataArray(short, Target_palette, 0x8FFFC80, 64);
+DataPointer(short, SS_start_x, 0x8FFE422);
+DataPointer(short, SS_start_y, 0x8FFE424);
+DataPointer(short, SS_start_angle, 0x8FFE426);
+DataPointer(short, SS_perfect_count, 0x8FFE442);
+DataPointer(Controller, Ctrl_1, 0x8FFF604);
+DataPointer(Controller, Ctrl_2, 0x8FFF606);
+DataPointer(char, Current_special_stage, 0x8FFFE16);
+DataPointer(short, Sound_test_sound, 0x8FFFF84);
+DataPointer(int, Blue_sphere_stage_number, 0x8FFFFA2);
+DataPointer(short, SK_alone_flag, 0x8FFFFAE);
+DataPointer(char, Emerald_count, 0x8FFFFB0);
+DataPointer(char, Super_emerald_count, 0x8FFFFB1);
+DataArray(char, Collected_emeralds_array, 0x8FFFFB2, 7);
+DataPointer(char, SK_special_stage_flag, 0x8FFFFBB);
+DataPointer(char, BS_special_stage_flag, 0x8FFFFD4);
+DataPointer(char, Debug_cheat_flag, 0x8FFFFE2);
 
 // Function pointer declarations.
 #define FunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) \
@@ -298,6 +351,9 @@ DataArray(StartPos, Knux_Start_Locations, 0x7F7BE4, 48);
 #define ThiscallFunctionPointer(RETURN_TYPE, NAME, ARGS, ADDRESS) \
 	static RETURN_TYPE (__thiscall *const NAME)ARGS = (RETURN_TYPE (__thiscall *)ARGS)ADDRESS
 #define VoidFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(void),ADDRESS)
+
+FunctionPointer(void *, Kosinski_Decomp, (void *src, void *dst), 0x41028C);
+VoidFunc(LoadSpecialStageMap, 0x69E3FF);
 
 #define patchdecl(address,data) { (void*)address, arrayptrandsize(data) }
 #define ptrdecl(address,data) { (void*)address, (void*)data }
