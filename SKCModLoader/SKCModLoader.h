@@ -304,6 +304,11 @@ DataArray(StartPos, Sonic_Start_Locations, 0x7F7B24, 48);
 DataArray(StartPos, Knux_Start_Locations, 0x7F7BE4, 48);
 DataArray(void *, SStageLayoutPtrs, 0x7F80F8, 8);
 DataArray(void *, SSCompressedLayoutPointers, 0x7FA156, 2);
+DataPointer(int, Sonic3Mode, 0x831180);
+// 0 - normal, 1 - special stage mode, 2 - debug mode
+DataPointer(int, ModeSelection, 0x831184);
+// 0 - S3K, 1 - S&K, 2 - S3
+DataPointer(int, GameSelection, 0x831188);
 DataPointer(void *, reg_a0, 0x8547C0);
 DataPointer(void *, reg_a1, 0x8547C8);
 DataPointer(void *, reg_a2, 0x8547CC);
@@ -330,6 +335,7 @@ DataPointer(short, SS_start_angle, 0x8FFE426);
 DataPointer(short, SS_perfect_count, 0x8FFE442);
 DataPointer(Controller, Ctrl_1, 0x8FFF604);
 DataPointer(Controller, Ctrl_2, 0x8FFF606);
+DataPointer(int, V_int_run_count, 0x8FFFE0C);
 DataPointer(char, Current_special_stage, 0x8FFFE16);
 DataPointer(short, Sound_test_sound, 0x8FFFF84);
 DataPointer(int, Blue_sphere_stage_number, 0x8FFFFA2);
@@ -352,6 +358,7 @@ DataPointer(char, Debug_cheat_flag, 0x8FFFFE2);
 	static RETURN_TYPE (__thiscall *const NAME)ARGS = (RETURN_TYPE (__thiscall *)ARGS)ADDRESS
 #define VoidFunc(NAME, ADDRESS) FunctionPointer(void,NAME,(void),ADDRESS)
 
+VoidFunc(VInt, 0x4050C0);
 FunctionPointer(void *, Kosinski_Decomp, (void *src, void *dst), 0x41028C);
 VoidFunc(LoadSpecialStageMap, 0x69E3FF);
 

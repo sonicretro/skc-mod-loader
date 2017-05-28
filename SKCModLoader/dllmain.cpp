@@ -35,11 +35,13 @@ static CodeParser codeParser;
 
 static vector<ModFrameFunc> modFrameFuncs;
 
-static void __cdecl ProcessCodes()
+FunctionPointer(void, sub_403101, (void*), 0x403101);
+static void __cdecl ProcessCodes(void *arg)
 {
 	codeParser.processCodeList();
 	for (unsigned int i = 0; i < modFrameFuncs.size(); i++)
 		modFrameFuncs[i]();
+	sub_403101(arg);
 }
 
 static bool dbgConsole;
@@ -642,7 +644,7 @@ static void __cdecl InitMods(void)
 		}
 		codes_str.close();
 	}
-	WriteJump((void *)0x426063, (void *)ProcessCodes);
+	WriteCall((void *)0x4051EB, ProcessCodes);
 }
 
 // Not gonna bother defining MidiInterfaceClass since we don't use it anyway.
