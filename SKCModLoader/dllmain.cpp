@@ -167,19 +167,19 @@ static const HelperFunctions helperFunctions =
 };
 
 static vector<string> &split(const string &s, char delim, vector<string> &elems) {
-    std::stringstream ss(s);
-    string item;
-    while (std::getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
-    return elems;
+	std::stringstream ss(s);
+	string item;
+	while (std::getline(ss, item, delim)) {
+		elems.push_back(item);
+	}
+	return elems;
 }
 
 
 static vector<string> split(const string &s, char delim) {
-    vector<string> elems;
-    split(s, delim, elems);
-    return elems;
+	vector<string> elems;
+	split(s, delim, elems);
+	return elems;
 }
 
 static string trim(const string &s)
