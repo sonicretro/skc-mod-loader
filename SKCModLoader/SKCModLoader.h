@@ -170,6 +170,29 @@ static inline BOOL WriteCall(void *writeaddress, void *funcaddress)
 #endif
 
 // Constants
+#define GameModeID_SegaScreen 0
+#define GameModeID_TitleScreen 4
+#define GameModeID_Demo 8
+#define GameModeID_Level 0xC
+#define GameModeID_SegaScreen2 0x10
+#define GameModeID_ContinueScreen 0x14
+#define GameModeID_SegaScreen3 0x18
+#define GameModeID_LevelSelect 0x1C
+#define GameModeID_S3Credits 0x20
+#define GameModeID_LevelSelect2 0x24
+#define GameModeID_LevelSelect3 0x28
+#define GameModeID_BlueSpheresTitle 0x2C
+#define GameModeID_BlueSpheresDifficulty 0x2C
+#define GameModeID_BlueSpheresResults 0x30
+#define GameModeID_SpecialStage 0x34
+#define GameModeID_CompetitionMenu 0x38
+#define GameModeID_CompetitionPlayerSelect 0x3C
+#define GameModeID_CompetitionLevelSelect 0x40
+#define GameModeID_CompetitionResults 0x44
+#define GameModeID_SpecialStageResults 0x48
+#define GameModeID_SaveScreen 0x4C
+#define GameModeID_TimeAttackRecords 0x50
+
 enum LevelIDs
 {
 	angel_island_zone,
@@ -240,6 +263,14 @@ enum LevelAndActIDs
 	hidden_palace_shrine
 };
 
+enum PlayerModes
+{
+	sonic_and_tails,
+	sonic_alone,
+	tails_alone,
+	knuckles_alone
+};
+
 // Structures
 struct PLC
 {
@@ -274,8 +305,11 @@ struct PalPtr
 union MDReg
 {
 	char Byte;
+	unsigned char UByte;
 	short Word;
+	unsigned short UWord;
 	int Long;
+	unsigned int ULong;
 };
 
 struct Controller
@@ -325,18 +359,25 @@ DataPointer(MDReg, reg_d5, 0x8549B8);
 DataPointer(MDReg, reg_d6, 0x8549BC);
 DataPointer(MDReg, reg_d7, 0x8549C0);
 DataArray(char, RAM_start, 0x8FF0000, 1);
-DataArray(short, Target_water_palette, 0x8FFF000, 64);
-DataArray(char, Plane_buffer, 0x8FFF100, 1);
-DataArray(short, Normal_palette, 0x8FFFC00, 64);
-DataArray(short, Target_palette, 0x8FFFC80, 64);
 DataPointer(short, SS_start_x, 0x8FFE422);
 DataPointer(short, SS_start_y, 0x8FFE424);
 DataPointer(short, SS_start_angle, 0x8FFE426);
 DataPointer(short, SS_perfect_count, 0x8FFE442);
+DataPointer(unsigned short, Ending_running_flag, 0x8FFEF72);
+DataArray(short, Target_water_palette, 0x8FFF000, 64);
+DataArray(char, Plane_buffer, 0x8FFF100, 1);
+DataPointer(unsigned char, Game_mode, 0x8FFF600);
 DataPointer(Controller, Ctrl_1, 0x8FFF604);
 DataPointer(Controller, Ctrl_2, 0x8FFF606);
+DataPointer(unsigned char, Super_Tails_flag, 0x8FFF667);
+DataArray(short, Normal_palette, 0x8FFFC00, 64);
+DataArray(short, Target_palette, 0x8FFFC80, 64);
 DataPointer(int, V_int_run_count, 0x8FFFE0C);
+DataPointer(unsigned short, Current_zone_and_act, 0x8FFFE10);
 DataPointer(char, Current_special_stage, 0x8FFFE16);
+DataPointer(unsigned char, Super_Sonic_Knux_flag, 0x8FFFE19);
+DataPointer(unsigned short, Saved_zone_and_act, 0x8FFFE2C);
+DataPointer(unsigned short, Player_mode, 0x8FFFF08);
 DataPointer(short, Sound_test_sound, 0x8FFFF84);
 DataPointer(int, Blue_sphere_stage_number, 0x8FFFFA2);
 DataPointer(short, SK_alone_flag, 0x8FFFFAE);

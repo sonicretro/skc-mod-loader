@@ -29,6 +29,7 @@ using std::vector;
 #include "IniFile.hpp"
 #include "TextConv.hpp"
 #include "CodeParser.hpp"
+#include "MidiInterface.h"
 
 // Code Parser.
 static CodeParser codeParser;
@@ -423,6 +424,13 @@ static const unordered_map<string, void(__cdecl *)(const IniGroup *, const wstri
 	{ "palette", ProcessPaletteINI }
 };
 
+bool IsDirectory(const string& path)
+{
+	const DWORD attrs = GetFileAttributesA(path.c_str());
+	return (attrs != INVALID_FILE_ATTRIBUTES && (attrs & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+MidiInterface *musicobj = nullptr;
 static void __cdecl InitMods(void)
 {
 	FILE *f_ini = _wfopen(L"mods\\SKCModLoader.ini", L"r");
@@ -480,6 +488,8 @@ static void __cdecl InitMods(void)
 	DWORD oldprot;
 	VirtualProtect((void *)0x401000, 0x427C00, PAGE_EXECUTE_WRITECOPY, &oldprot);
 
+	vector<std::pair<ModInitFunc, wstring>> initfuncs;
+
 	// It's mod loading time!
 	PrintDebug("Loading mods...\n");
 	for (int i = 1; i < 999; i++)
@@ -505,6 +515,10 @@ static void __cdecl InitMods(void)
 		const string mod_nameA = modinfo->getString("Name");
 		const wstring mod_name = modinfo->getWString("Name");
 		PrintDebug("%d. %s\n", i, mod_nameA.c_str());
+
+		string musicfol = mod_dirA + "\\Music";
+		if (IsDirectory(musicfol))
+			musicobj->AddMusicFolder(musicfol);
 
 		// Check if a custom EXE is required.
 		if (modinfo->hasKeyNonEmpty("EXEFile"))
@@ -538,7 +552,7 @@ static void __cdecl InitMods(void)
 				{
 					const ModInitFunc init = (const ModInitFunc)GetProcAddress(module, "Init");
 					if (init)
-						init(mod_dir.c_str(), helperFunctions);
+						initfuncs.push_back({ init, mod_dir });
 					const PatchList *patches = (const PatchList *)GetProcAddress(module, "Patches");
 					if (patches)
 						for (int i = 0; i < patches->Count; i++)
@@ -588,6 +602,9 @@ static void __cdecl InitMods(void)
 
 	}
 
+	for (auto a : initfuncs)
+		a.first(a.second.c_str(), helperFunctions);
+
 	if (PLCList.size() > 0)
 	{
 		int memsz = PLCList.size() * 4;
@@ -620,7 +637,7 @@ static void __cdecl InitMods(void)
 	ifstream codes_str("mods\\Codes.dat", ifstream::binary);
 	if (codes_str.is_open())
 	{
-		static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '4'};
+		static const char codemagic[6] = {'c', 'o', 'd', 'e', 'v', '5'};
 		char buf[sizeof(codemagic)];
 		codes_str.read(buf, sizeof(buf));
 		if (!memcmp(buf, codemagic, sizeof(codemagic)))
@@ -657,22 +674,12 @@ static void __cdecl InitMods(void)
 	WriteCall((void *)0x4051EB, ProcessCodes);
 }
 
-// Not gonna bother defining MidiInterfaceClass since we don't use it anyway.
-extern "C" __declspec(dllexport) void *GetMidiInterface()
+HMODULE moduleHandle;
+extern "C" __declspec(dllexport) MidiInterface *GetMidiInterface()
 {
-	HMODULE midimodule = LoadLibrary(_T("MIDIOUT_orig.DLL"));
-	if (midimodule)
-	{
-		InitMods();
-		return ((void *(*)())GetProcAddress(midimodule, "GetMidiInterface"))();
-	}
-	else
-	{
-		MessageBox(NULL, L"MIDIOUT_orig.dll could not be loaded!\n\n"
-			L"S&KC will now proceed to abruptly exit.",
-			L"S&KC Mod Loader", MB_ICONERROR);
-		ExitProcess(1);
-	}
+	musicobj = new MidiInterface(moduleHandle);
+	InitMods();
+	return musicobj;
 }
 
 /**
@@ -686,6 +693,8 @@ BOOL APIENTRY DllMain(HINSTANCE hinstDll, DWORD fdwReason, LPVOID lpvReserved)
 	switch (fdwReason)
 	{
 		case DLL_PROCESS_ATTACH:
+			moduleHandle = hinstDll;
+			break;
 		case DLL_THREAD_ATTACH:
 		case DLL_THREAD_DETACH:
 			break;

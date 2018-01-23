@@ -1,0 +1,227 @@
+#include "resource.h"
+
+IDR_MIDI_FM1            MIDI_FM                 "midis\\FM_00_S3_Title.mid"
+
+IDR_MIDI_FM2            MIDI_FM                 "midis\\FM_01_AIZ_1.mid"
+
+IDR_MIDI_FM3            MIDI_FM                 "midis\\FM_02_AIZ_2.mid"
+
+IDR_MIDI_FM4            MIDI_FM                 "midis\\FM_03_HCZ_1.mid"
+
+IDR_MIDI_FM5            MIDI_FM                 "midis\\FM_04_HCZ_2.mid"
+
+IDR_MIDI_FM6            MIDI_FM                 "midis\\FM_05_MGZ_1.mid"
+
+IDR_MIDI_FM7            MIDI_FM                 "midis\\FM_06_MGZ_2.mid"
+
+IDR_MIDI_FM8            MIDI_FM                 "midis\\FM_07_CNZ_1.mid"
+
+IDR_MIDI_FM9            MIDI_FM                 "midis\\FM_08_CNZ_2.mid"
+
+IDR_MIDI_FM10           MIDI_FM                 "midis\\FM_09_FBZ_1.mid"
+
+IDR_MIDI_FM11           MIDI_FM                 "midis\\FM_10_FBZ_2.mid"
+
+IDR_MIDI_FM12           MIDI_FM                 "midis\\FM_11_ICZ_1.mid"
+
+IDR_MIDI_FM13           MIDI_FM                 "midis\\FM_12_ICZ_2.mid"
+
+IDR_MIDI_FM14           MIDI_FM                 "midis\\FM_13_LBZ_1.mid"
+
+IDR_MIDI_FM15           MIDI_FM                 "midis\\FM_14_LBZ_2.mid"
+
+IDR_MIDI_FM16           MIDI_FM                 "midis\\FM_15_MHZ_1.mid"
+
+IDR_MIDI_FM17           MIDI_FM                 "midis\\FM_16_MHZ_2.mid"
+
+IDR_MIDI_FM18           MIDI_FM                 "midis\\FM_17_SZ_1.mid"
+
+IDR_MIDI_FM19           MIDI_FM                 "midis\\FM_18_SZ_2.mid"
+
+IDR_MIDI_FM20           MIDI_FM                 "midis\\FM_19_LRZ_1.mid"
+
+IDR_MIDI_FM21           MIDI_FM                 "midis\\FM_20_LRZ_2_HPZ.mid"
+
+IDR_MIDI_FM22           MIDI_FM                 "midis\\FM_21_SSZ.mid"
+
+IDR_MIDI_FM23           MIDI_FM                 "midis\\FM_22_DEZ_1.mid"
+
+IDR_MIDI_FM24           MIDI_FM                 "midis\\FM_23_DEZ_2.mid"
+
+IDR_MIDI_FM25           MIDI_FM                 "midis\\FM_24_Act_1_Boss.mid"
+
+IDR_MIDI_FM26           MIDI_FM                 "midis\\FM_25_Act_2_Boss.mid"
+
+IDR_MIDI_FM27           MIDI_FM                 "midis\\FM_26_DDZ.mid"
+
+IDR_MIDI_FM28           MIDI_FM                 "midis\\FM_27_Glowing_Sphere.mid"
+
+IDR_MIDI_FM29           MIDI_FM                 "midis\\FM_28_Special.mid"
+
+IDR_MIDI_FM30           MIDI_FM                 "midis\\FM_29_Slot.mid"
+
+IDR_MIDI_FM31           MIDI_FM                 "midis\\FM_30_Gumball.mid"
+
+IDR_MIDI_FM32           MIDI_FM                 "midis\\FM_31_S3_Knuckles.mid"
+
+IDR_MIDI_FM33           MIDI_FM                 "midis\\FM_32_2P_ALZ.mid"
+
+IDR_MIDI_FM34           MIDI_FM                 "midis\\FM_33_2P_BPZ.mid"
+
+IDR_MIDI_FM35           MIDI_FM                 "midis\\FM_34_2P_DPZ.mid"
+
+IDR_MIDI_FM36           MIDI_FM                 "midis\\FM_35_2P_CGZ.mid"
+
+IDR_MIDI_FM37           MIDI_FM                 "midis\\FM_36_2P_EMZ.mid"
+
+IDR_MIDI_FM38           MIDI_FM                 "midis\\FM_37_Game_Over.mid"
+
+IDR_MIDI_FM39           MIDI_FM                 "midis\\FM_38_Results.mid"
+
+IDR_MIDI_FM40           MIDI_FM                 "midis\\FM_39_Act_Clear.mid"
+
+IDR_MIDI_FM41           MIDI_FM                 "midis\\FM_40_S3_Life.mid"
+
+IDR_MIDI_FM42           MIDI_FM                 "midis\\FM_41_Emerald.mid"
+
+IDR_MIDI_FM43           MIDI_FM                 "midis\\FM_42_S3_Invinc.mid"
+
+IDR_MIDI_FM44           MIDI_FM                 "midis\\FM_43_2P_Menu.mid"
+
+IDR_MIDI_FM45           MIDI_FM                 "midis\\FM_44_Unused.mid"
+
+IDR_MIDI_FM46           MIDI_FM                 "midis\\FM_45_Options.mid"
+
+IDR_MIDI_FM47           MIDI_FM                 "midis\\FM_46_Final_Boss.mid"
+
+IDR_MIDI_FM48           MIDI_FM                 "midis\\FM_47_Timer.mid"
+
+IDR_MIDI_FM49           MIDI_FM                 "midis\\FM_48_S3_Clear.mid"
+
+IDR_MIDI_FM50           MIDI_FM                 "midis\\FM_49_S3_Credits.mid"
+
+IDR_MIDI_FM51           MIDI_FM                 "midis\\FM_50_S3K_Knuckles.mid"
+
+IDR_MIDI_FM52           MIDI_FM                 "midis\\FM_51_S3K_Title.mid"
+
+IDR_MIDI_FM53           MIDI_FM                 "midis\\FM_52_S3K_Life.mid"
+
+IDR_MIDI_FM54           MIDI_FM                 "midis\\FM_53_S3K_Invinc.mid"
+
+IDR_MIDI_FM55           MIDI_FM                 "midis\\FM_54_S3K_Clear.mid"
+
+IDR_MIDI_FM56           MIDI_FM                 "midis\\FM_55_S3K_Credits.mid"
+
+IDR_MIDI_GM1            MIDI_GM                 "midis\\GM_00_S3_Title.mid"
+
+IDR_MIDI_GM2            MIDI_GM                 "midis\\GM_01_AIZ_1.mid"
+
+IDR_MIDI_GM3            MIDI_GM                 "midis\\GM_02_AIZ_2.mid"
+
+IDR_MIDI_GM4            MIDI_GM                 "midis\\GM_03_HCZ_1.mid"
+
+IDR_MIDI_GM5            MIDI_GM                 "midis\\GM_04_HCZ_2.mid"
+
+IDR_MIDI_GM6            MIDI_GM                 "midis\\GM_05_MGZ_1.mid"
+
+IDR_MIDI_GM7            MIDI_GM                 "midis\\GM_06_MGZ_2.mid"
+
+IDR_MIDI_GM8            MIDI_GM                 "midis\\GM_07_CNZ_1.mid"
+
+IDR_MIDI_GM9            MIDI_GM                 "midis\\GM_08_CNZ_2.mid"
+
+IDR_MIDI_GM10           MIDI_GM                 "midis\\GM_09_FBZ_1.mid"
+
+IDR_MIDI_GM11           MIDI_GM                 "midis\\GM_10_FBZ_2.mid"
+
+IDR_MIDI_GM12           MIDI_GM                 "midis\\GM_11_ICZ_1.mid"
+
+IDR_MIDI_GM13           MIDI_GM                 "midis\\GM_12_ICZ_2.mid"
+
+IDR_MIDI_GM14           MIDI_GM                 "midis\\GM_13_LBZ_1.mid"
+
+IDR_MIDI_GM15           MIDI_GM                 "midis\\GM_14_LBZ_2.mid"
+
+IDR_MIDI_GM16           MIDI_GM                 "midis\\GM_15_MHZ_1.mid"
+
+IDR_MIDI_GM17           MIDI_GM                 "midis\\GM_16_MHZ_2.mid"
+
+IDR_MIDI_GM18           MIDI_GM                 "midis\\GM_17_SZ_1.mid"
+
+IDR_MIDI_GM19           MIDI_GM                 "midis\\GM_18_SZ_2.mid"
+
+IDR_MIDI_GM20           MIDI_GM                 "midis\\GM_19_LRZ_1.mid"
+
+IDR_MIDI_GM21           MIDI_GM                 "midis\\GM_20_LRZ_2_HPZ.mid"
+
+IDR_MIDI_GM22           MIDI_GM                 "midis\\GM_21_SSZ.mid"
+
+IDR_MIDI_GM23           MIDI_GM                 "midis\\GM_22_DEZ_1.mid"
+
+IDR_MIDI_GM24           MIDI_GM                 "midis\\GM_23_DEZ_2.mid"
+
+IDR_MIDI_GM25           MIDI_GM                 "midis\\GM_24_Act_1_Boss.mid"
+
+IDR_MIDI_GM26           MIDI_GM                 "midis\\GM_25_Act_2_Boss.mid"
+
+IDR_MIDI_GM27           MIDI_GM                 "midis\\GM_26_DDZ.mid"
+
+IDR_MIDI_GM28           MIDI_GM                 "midis\\GM_27_Glowing_Sphere.mid"
+
+IDR_MIDI_GM29           MIDI_GM                 "midis\\GM_28_Special.mid"
+
+IDR_MIDI_GM30           MIDI_GM                 "midis\\GM_29_Slot.mid"
+
+IDR_MIDI_GM31           MIDI_GM                 "midis\\GM_30_Gumball.mid"
+
+IDR_MIDI_GM32           MIDI_GM                 "midis\\GM_31_S3_Knuckles.mid"
+
+IDR_MIDI_GM33           MIDI_GM                 "midis\\GM_32_2P_ALZ.mid"
+
+IDR_MIDI_GM34           MIDI_GM                 "midis\\GM_33_2P_BPZ.mid"
+
+IDR_MIDI_GM35           MIDI_GM                 "midis\\GM_34_2P_DPZ.mid"
+
+IDR_MIDI_GM36           MIDI_GM                 "midis\\GM_35_2P_CGZ.mid"
+
+IDR_MIDI_GM37           MIDI_GM                 "midis\\GM_36_2P_EMZ.mid"
+
+IDR_MIDI_GM38           MIDI_GM                 "midis\\GM_37_Game_Over.mid"
+
+IDR_MIDI_GM39           MIDI_GM                 "midis\\GM_38_Results.mid"
+
+IDR_MIDI_GM40           MIDI_GM                 "midis\\GM_39_Act_Clear.mid"
+
+IDR_MIDI_GM41           MIDI_GM                 "midis\\GM_40_S3_Life.mid"
+
+IDR_MIDI_GM42           MIDI_GM                 "midis\\GM_41_Emerald.mid"
+
+IDR_MIDI_GM43           MIDI_GM                 "midis\\GM_42_S3_Invinc.mid"
+
+IDR_MIDI_GM44           MIDI_GM                 "midis\\GM_43_2P_Menu.mid"
+
+IDR_MIDI_GM45           MIDI_GM                 "midis\\GM_44_Unused.mid"
+
+IDR_MIDI_GM46           MIDI_GM                 "midis\\GM_45_Options.mid"
+
+IDR_MIDI_GM47           MIDI_GM                 "midis\\GM_46_Final_Boss.mid"
+
+IDR_MIDI_GM48           MIDI_GM                 "midis\\GM_47_Timer.mid"
+
+IDR_MIDI_GM49           MIDI_GM                 "midis\\GM_48_S3_Clear.mid"
+
+IDR_MIDI_GM50           MIDI_GM                 "midis\\GM_49_S3_Credits.mid"
+
+IDR_MIDI_GM51           MIDI_GM                 "midis\\GM_50_S3K_Knuckles.mid"
+
+IDR_MIDI_GM52           MIDI_GM                 "midis\\GM_51_S3K_Title.mid"
+
+IDR_MIDI_GM53           MIDI_GM                 "midis\\GM_52_S3K_Life.mid"
+
+IDR_MIDI_GM54           MIDI_GM                 "midis\\GM_53_S3K_Invinc.mid"
+
+IDR_MIDI_GM55           MIDI_GM                 "midis\\GM_54_S3K_Clear.mid"
+
+IDR_MIDI_GM56           MIDI_GM                 "midis\\GM_55_S3K_Credits.mid"
+
+IDR_WAVE_SEGA           WAVE                    "SEGA.wav"
