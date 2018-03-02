@@ -119,7 +119,8 @@ const char *const TrackOptions[] = {
 	"BlueSphereResultTrack",
 	"BlueSphereTitleTrack",
 	"BlueSphereDifficultyTrack",
-	"TimeAttackRecordsTrack"
+	"TimeAttackRecordsTrack",
+	"KnucklesBossTrack"
 };
 
 void MidiInterface::AddMusicFolder(const string &folder)
@@ -206,7 +207,7 @@ BOOL MidiInterface::init(HWND hwnd)
 
 		memset(tmpSet, MusicID_Default, SizeOfArray(tmpSet));
 
-		const IniGroup *group = settings.getGroup("");
+		const IniGroup *group = settings.getGroup("All");
 		if (group != nullptr)
 			readSettings(fol, group, tmpSet, tmpFn);
 
@@ -240,16 +241,6 @@ BOOL MidiInterface::init(HWND hwnd)
 		}
 	}
 
-	if (trackSettings[MusicID_HiddenPalace] == MusicID_Default)
-		trackSettings[MusicID_HiddenPalace] = MusicID_LavaReef2;
-	if (trackSettings[MusicID_Ending] == MusicID_Default)
-		trackSettings[MusicID_Ending] = MusicID_SkySanctuary;
-	if (trackSettings[MusicID_BlueSphereTitle] == MusicID_Default)
-		trackSettings[MusicID_BlueSphereTitle] = GameSelection == 2 ? MusicID_S3Continue : MusicID_Continue;
-	if (trackSettings[MusicID_BlueSphereDifficulty] == MusicID_Default)
-		trackSettings[MusicID_BlueSphereDifficulty] = MusicID_SKInvincibility;
-	if (trackSettings[MusicID_TimeAttackRecords] == MusicID_Default)
-		trackSettings[MusicID_TimeAttackRecords] = GameSelection == 2 ? MusicID_S3Continue : MusicID_Continue;
 	switch (GameSelection)
 	{
 	case 0:
@@ -366,6 +357,11 @@ BOOL MidiInterface::loadSong(short id, unsigned int bgmmode)
 		if (Game_mode == GameModeID_SaveScreen)
 			newid = MusicID_DataSelect;
 		break;
+	case MusicID_S3Knuckles:
+	case MusicID_SKKnuckles:
+		if (Current_zone_and_act == hidden_palace_zone)
+			newid = MusicID_KnucklesBoss;
+		break;
 	}
 	short *settings = trackSettings;
 	string *filenames = trackFilenames;
@@ -405,31 +401,23 @@ checkbycharbyzone:
 				filenames = s3TrackFilenames;
 			}
 		}
-		switch (newid)
-		{
-		case MusicID_SuperSonic:
-		case MusicID_DataSelect:
-		case MusicID_SpecialStageResult:
-		case MusicID_BlueSphereResult:
-			if (settings[newid] == MusicID_Default)
-			{
-				newid = id;
-				goto checkbycharbyzone;
-			}
-			break;
-		}
+	}
+	if (newid >= MusicID_HiddenPalace && settings[newid] == MusicID_Default)
+	{
+		newid = id;
+		goto checkbycharbyzone;
 	}
 	short set = settings[newid];
 	if (set == MusicID_MIDI)
 	{
 		trackType = TrackType_MIDI;
-		if (trackFilenames[newid].empty()) // use default MIDI
+		if (filenames[newid].empty()) // use default MIDI
 		{
 			HRSRC hres = FindResource(moduleHandle, MAKEINTRESOURCE((!bgmmode ? IDR_MIDI_FM1 : IDR_MIDI_GM1) + id), !bgmmode ? _T("MIDI_FM") : _T("MIDI_GM"));
 			midichan = BASS_MIDI_StreamCreateFile(TRUE, LockResource(LoadResource(moduleHandle, hres)), 0, SizeofResource(moduleHandle, hres), BASS_MIDI_DECAYEND | BASS_MIDI_DECAYSEEK, 0);
 		}
 		else
-			midichan = BASS_MIDI_StreamCreateFile(false, trackFilenames[newid].c_str(), 0, 0, BASS_MIDI_DECAYEND | BASS_MIDI_DECAYSEEK, 0);
+			midichan = BASS_MIDI_StreamCreateFile(false, filenames[newid].c_str(), 0, 0, BASS_MIDI_DECAYEND | BASS_MIDI_DECAYSEEK, 0);
 		if (midichan != 0)
 		{
 			BASS_ChannelSetSync(midichan, BASS_SYNC_END, 0, BASS_onTrackEnd, this);
@@ -463,9 +451,9 @@ checkbycharbyzone:
 	else if (set == MusicID_VGMStream)
 	{
 		trackType = TrackType_VGMStream;
-		basschan = BASS_VGMSTREAM_StreamCreate(trackFilenames[newid].c_str(), BASS_STREAM_DECODE);
+		basschan = BASS_VGMSTREAM_StreamCreate(filenames[newid].c_str(), BASS_STREAM_DECODE);
 		if (basschan == 0)
-			basschan = BASS_StreamCreateFile(false, trackFilenames[newid].c_str(), 0, 0, BASS_STREAM_DECODE);
+			basschan = BASS_StreamCreateFile(false, filenames[newid].c_str(), 0, 0, BASS_STREAM_DECODE);
 		if (basschan != 0)
 		{
 			int tempochan = BASS_FX_TempoCreate(basschan, BASS_FX_FREESOURCE);

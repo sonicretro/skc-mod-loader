@@ -19,6 +19,7 @@ enum MusicID2 {
 	MusicID_BlueSphereTitle,
 	MusicID_BlueSphereDifficulty,
 	MusicID_TimeAttackRecords,
+	MusicID_KnucklesBoss,
 	TrackCount
 };
 

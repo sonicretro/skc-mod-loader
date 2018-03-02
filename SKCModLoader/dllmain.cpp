@@ -518,7 +518,7 @@ static void __cdecl InitMods(void)
 
 		string musicfol = mod_dirA + "\\Music";
 		if (IsDirectory(musicfol))
-			musicobj->AddMusicFolder(musicfol);
+			musicobj->AddMusicFolder(musicfol + '\\');
 
 		// Check if a custom EXE is required.
 		if (modinfo->hasKeyNonEmpty("EXEFile"))
