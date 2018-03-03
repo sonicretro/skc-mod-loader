@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
-using IniSerializer;
+using IniFile;
 
 namespace SKCModManager
 {
@@ -16,49 +16,58 @@ namespace SKCModManager
 		{
 			string moddir = Path.Combine(Path.Combine(Environment.CurrentDirectory, "mods"), ValidateFilename(textModName.Text));
 
-			if (textModName.Text.Length > 0)
-			{
-				try
-				{
-
-					if (!Directory.Exists(moddir))
-					{
-						Directory.CreateDirectory(moddir);
-
-						if (checkOpenFolder.Checked)
-							System.Diagnostics.Process.Start(moddir);
-
-						var newMod = new ModTemplate();
-
-						newMod.Name = textModName.Text;
-						newMod.Author = textModAuthor.Text;
-						newMod.Description = textModDescription.Text;
-
-						IniFile.Serialize(newMod, Path.Combine(moddir, "mod.ini"));
-
-						// I feel like this is a little hackish, but it works.
-						// Setting it on the button causes it to close regardless
-						// of whether or not you call Close(), which we don't want.
-						DialogResult = DialogResult.OK;
-						Close();
-					}
-					else
-					{
-						MessageBox.Show("A mod with that name already exists.\nPlease choose a different name or rename the existing one.", "Mod already exists", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-					}
-				}
-				catch (Exception error)
-				{
-					MessageBox.Show(this, error.ToString(), "OH NOES", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
-			}
-			else
+			if (textModName.Text.Length <= 0)
 			{
 				MessageBox.Show("You can't have a mod without a name.", "Invalid mod name", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+
+			try
+			{
+				if (Directory.Exists(moddir))
+				{
+					MessageBox.Show("A mod with that name already exists."
+					                + "\nPlease choose a different name or rename the existing one.", "Mod already exists",
+						MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+					return;
+				}
+
+				Directory.CreateDirectory(moddir);
+
+				if (checkRedirectSaveFile.Checked)
+				{
+					Directory.CreateDirectory(Path.Combine(moddir, "savedata"));
+				}
+
+				SKCModInfo newMod = new SKCModInfo
+				{
+					Name             = textModName.Text,
+					Author           = textModAuthor.Text,
+					Description      = textModDescription.Text,
+					Version          = textVersion.Text,
+					RedirectSaveFile = checkRedirectSaveFile.Checked,
+					GitHubRepo       = textGitHubRepo.Text,
+					GitHubAsset      = textGitHubAttachment.Text,
+					UpdateUrl        = textDirUrl.Text
+				};
+
+				IniSerializer.Serialize(newMod, Path.Combine(moddir, "mod.ini"));
+
+				if (checkOpenFolder.Checked)
+				{
+					System.Diagnostics.Process.Start(moddir);
+				}
+
+				DialogResult = DialogResult.OK;
+				Close();
+			}
+			catch (Exception error)
+			{
+				MessageBox.Show(this, error.Message, "Mod Creation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
-		string ValidateFilename(string filename)
+		static string ValidateFilename(string filename)
 		{
 			string result = filename;
 
@@ -67,12 +76,5 @@ namespace SKCModManager
 
 			return result;
 		}
-	}
-
-	class ModTemplate
-	{
-		public string Name;
-		public string Description;
-		public string Author;
 	}
 }

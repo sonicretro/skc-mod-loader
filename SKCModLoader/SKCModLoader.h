@@ -302,7 +302,7 @@ struct PalPtr
 	uint16_t Size;
 };
 
-union MDReg
+union DReg
 {
 	char Byte;
 	unsigned char UByte;
@@ -310,6 +310,17 @@ union MDReg
 	unsigned short UWord;
 	int Long;
 	unsigned int ULong;
+};
+
+union AReg
+{
+	void *Unknown;
+	char *Byte;
+	unsigned char *UByte;
+	short *Word;
+	unsigned short *UWord;
+	int *Long;
+	unsigned int *ULong;
 };
 
 struct Controller
@@ -343,21 +354,21 @@ DataPointer(int, Sonic3Mode, 0x831180);
 DataPointer(int, ModeSelection, 0x831184);
 // 0 - S3K, 1 - S&K, 2 - S3
 DataPointer(int, GameSelection, 0x831188);
-DataPointer(void *, reg_a0, 0x8547C0);
-DataPointer(void *, reg_a1, 0x8547C8);
-DataPointer(void *, reg_a2, 0x8547CC);
-DataPointer(void *, reg_a3, 0x8547D0);
-DataPointer(void *, reg_a4, 0x8547D4);
-DataPointer(void *, reg_a5, 0x854998);
-DataPointer(void *, reg_a6, 0x85499C);
-DataPointer(MDReg, reg_d0, 0x8549A4);
-DataPointer(MDReg, reg_d1, 0x8549A8);
-DataPointer(MDReg, reg_d2, 0x8549AC);
-DataPointer(MDReg, reg_d3, 0x8549B0);
-DataPointer(MDReg, reg_d4, 0x8549B4);
-DataPointer(MDReg, reg_d5, 0x8549B8);
-DataPointer(MDReg, reg_d6, 0x8549BC);
-DataPointer(MDReg, reg_d7, 0x8549C0);
+DataPointer(AReg, reg_a0, 0x8547C0);
+DataPointer(AReg, reg_a1, 0x8547C8);
+DataPointer(AReg, reg_a2, 0x8547CC);
+DataPointer(AReg, reg_a3, 0x8547D0);
+DataPointer(AReg, reg_a4, 0x8547D4);
+DataPointer(AReg, reg_a5, 0x854998);
+DataPointer(AReg, reg_a6, 0x85499C);
+DataPointer(DReg, reg_d0, 0x8549A4);
+DataPointer(DReg, reg_d1, 0x8549A8);
+DataPointer(DReg, reg_d2, 0x8549AC);
+DataPointer(DReg, reg_d3, 0x8549B0);
+DataPointer(DReg, reg_d4, 0x8549B4);
+DataPointer(DReg, reg_d5, 0x8549B8);
+DataPointer(DReg, reg_d6, 0x8549BC);
+DataPointer(DReg, reg_d7, 0x8549C0);
 DataArray(char, RAM_start, 0x8FF0000, 1);
 DataPointer(short, SS_start_x, 0x8FFE422);
 DataPointer(short, SS_start_y, 0x8FFE424);

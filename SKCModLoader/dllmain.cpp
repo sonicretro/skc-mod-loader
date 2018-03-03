@@ -430,6 +430,52 @@ bool IsDirectory(const string& path)
 	return (attrs != INVALID_FILE_ATTRIBUTES && (attrs & FILE_ATTRIBUTE_DIRECTORY));
 }
 
+string savepath;
+void __cdecl ReadSaveFile()
+{
+	size_t v0; // eax@1
+	CHAR FileName[256]; // [sp+Ch] [bp-108h]@1
+	DWORD NumberOfBytesRead; // [sp+10Ch] [bp-8h]@3
+	HANDLE hObject; // [sp+110h] [bp-4h]@1
+
+	memset((void*)0x8549E8, 0, 0x400u);
+	GetModuleFileNameA(0, FileName, 0x100u);
+	v0 = strlen(FileName);
+	strcpy(&FileName[v0 - 3], "BIN");
+	string path = savepath + '\\' + FileName;
+	hObject = CreateFileA(path.c_str(), 0x80000000, 1u, 0, 3u, 0x80u, 0);
+	if (hObject != INVALID_HANDLE_VALUE)
+	{
+		ReadFile(hObject, (void*)0x8549E8, 0x400u, &NumberOfBytesRead, 0);
+		CloseHandle(hObject);
+	}
+}
+
+void __cdecl WriteSaveFile()
+{
+	size_t v0; // eax@1
+	char FileName[256]; // [sp+Ch] [bp-108h]@1
+	HANDLE hObject; // [sp+10Ch] [bp-8h]@1
+	DWORD NumberOfBytesWritten; // [sp+110h] [bp-4h]@3
+
+	if (!IsDirectory(savepath))
+		CreateDirectoryA(savepath.c_str(), nullptr);
+	GetModuleFileNameA(0, FileName, 0x100u);
+	v0 = strlen(FileName);
+	strcpy(&FileName[v0 - 3], "BIN");
+	string path = savepath + '\\' + FileName;
+	hObject = CreateFileA(path.c_str(), 0x40000000u, 0, 0, 2u, 0x80u, 0);
+	if (hObject == INVALID_HANDLE_VALUE)
+		MessageBoxA(0, "Cannot Open Save Data File", "Error", 0);
+	else
+	{
+		WriteFile(hObject, (void*)0x8549E8, 0x400u, &NumberOfBytesWritten, 0);
+		if (NumberOfBytesWritten != 1024)
+			MessageBoxA(0, "Cannot Write Save Data File", "Error", 0);
+		CloseHandle(hObject);
+	}
+}
+
 MidiInterface *musicobj = nullptr;
 static void __cdecl InitMods(void)
 {
@@ -600,6 +646,14 @@ static void __cdecl InitMods(void)
 			delete exedata;
 		}
 
+		if (modinfo->getBool("RedirectSaveFile"))
+			savepath = mod_dirA + "\\savedata";
+	}
+
+	if (!savepath.empty())
+	{
+		WriteJump((void*)0x404E0C, ReadSaveFile);
+		WriteJump((void*)0x404ECE, WriteSaveFile);
 	}
 
 	for (auto a : initfuncs)
@@ -632,6 +686,47 @@ static void __cdecl InitMods(void)
 	}
 
 	PrintDebug("Finished loading mods\n");
+
+	// Check for patches.
+	ifstream patches_str("mods\\Patches.dat", ifstream::binary);
+	if (patches_str.is_open())
+	{
+		CodeParser patchParser;
+		static const char codemagic[6] = { 'c', 'o', 'd', 'e', 'v', '5' };
+		char buf[sizeof(codemagic)];
+		patches_str.read(buf, sizeof(buf));
+		if (!memcmp(buf, codemagic, sizeof(codemagic)))
+		{
+			int codecount_header;
+			patches_str.read((char*)&codecount_header, sizeof(codecount_header));
+			PrintDebug("Loading %d patches...\n", codecount_header);
+			patches_str.seekg(0);
+			int codecount = patchParser.readCodes(patches_str);
+			if (codecount >= 0)
+			{
+				PrintDebug("Loaded %d patches.\n", codecount);
+				patchParser.processCodeList();
+			}
+			else
+			{
+				PrintDebug("ERROR loading patches: ");
+				switch (codecount)
+				{
+				case -EINVAL:
+					PrintDebug("Patch file is not in the correct format.\n");
+					break;
+				default:
+					PrintDebug("%s\n", strerror(-codecount));
+					break;
+				}
+			}
+		}
+		else
+		{
+			PrintDebug("Patch file is not in the correct format.\n");
+		}
+		patches_str.close();
+	}
 
 	// Check for codes.
 	ifstream codes_str("mods\\Codes.dat", ifstream::binary);
