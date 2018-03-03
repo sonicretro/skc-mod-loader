@@ -483,7 +483,7 @@
 			this.fileCheckBox.Size = new System.Drawing.Size(48, 18);
 			this.fileCheckBox.TabIndex = 2;
 			this.fileCheckBox.Text = "File";
-			this.toolTip.SetToolTip(this.fileCheckBox, "Logs debug messages to mods/SADXModLoader.log");
+			this.toolTip.SetToolTip(this.fileCheckBox, "Logs debug messages to mods/SKCModLoader.log");
 			this.fileCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// modContextMenu

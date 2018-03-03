@@ -98,7 +98,7 @@ namespace SKCModManager
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(this, $"Error loading code list: {ex.Message}", "SADX Mod Loader", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show(this, $"Error loading code list: {ex.Message}", "S&KC Mod Loader", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				mainCodes = new CodeList();
 			}
 
@@ -384,7 +384,7 @@ namespace SKCModManager
 									}
 								} while (result == DialogResult.Retry);
 
-								using (var dlg2 = new LoaderDownloadDialog("http://mm.reimuhakurei.net/misc/SKCModLoader.7z", updatePath))
+								using (var dlg2 = new LoaderDownloadDialog("http://mm.reimuhakurei.net/SKCModLoader.7z", updatePath))
 									if (dlg2.ShowDialog(this) == DialogResult.OK)
 									{
 										Close();
