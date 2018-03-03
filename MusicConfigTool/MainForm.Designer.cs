@@ -31,6 +31,8 @@
 			System.Windows.Forms.Label label1;
 			System.Windows.Forms.Button soundfontBrowseButton;
 			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.tabPage5 = new System.Windows.Forms.TabPage();
+			this.soundfontTextBox = new System.Windows.Forms.TextBox();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -43,18 +45,37 @@
 			this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setAllToDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setAllToMIDIToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.tabPage5 = new System.Windows.Forms.TabPage();
-			this.soundfontTextBox = new System.Windows.Forms.TextBox();
 			label1 = new System.Windows.Forms.Label();
 			soundfontBrowseButton = new System.Windows.Forms.Button();
 			this.tabControl1.SuspendLayout();
+			this.tabPage5.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
 			this.tabPage3.SuspendLayout();
 			this.tabPage4.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
-			this.tabPage5.SuspendLayout();
 			this.SuspendLayout();
+			// 
+			// label1
+			// 
+			label1.AutoSize = true;
+			label1.Location = new System.Drawing.Point(8, 11);
+			label1.Name = "label1";
+			label1.Size = new System.Drawing.Size(85, 13);
+			label1.TabIndex = 0;
+			label1.Text = "MIDI Soundfont:";
+			// 
+			// soundfontBrowseButton
+			// 
+			soundfontBrowseButton.AutoSize = true;
+			soundfontBrowseButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			soundfontBrowseButton.Location = new System.Drawing.Point(305, 6);
+			soundfontBrowseButton.Name = "soundfontBrowseButton";
+			soundfontBrowseButton.Size = new System.Drawing.Size(26, 23);
+			soundfontBrowseButton.TabIndex = 2;
+			soundfontBrowseButton.Text = "...";
+			soundfontBrowseButton.UseVisualStyleBackColor = true;
+			soundfontBrowseButton.Click += new System.EventHandler(this.soundfontBrowseButton_Click);
 			// 
 			// tabControl1
 			// 
@@ -69,6 +90,27 @@
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(584, 538);
 			this.tabControl1.TabIndex = 0;
+			// 
+			// tabPage5
+			// 
+			this.tabPage5.Controls.Add(soundfontBrowseButton);
+			this.tabPage5.Controls.Add(this.soundfontTextBox);
+			this.tabPage5.Controls.Add(label1);
+			this.tabPage5.Location = new System.Drawing.Point(4, 22);
+			this.tabPage5.Name = "tabPage5";
+			this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage5.Size = new System.Drawing.Size(576, 512);
+			this.tabPage5.TabIndex = 4;
+			this.tabPage5.Text = "Settings";
+			this.tabPage5.UseVisualStyleBackColor = true;
+			// 
+			// soundfontTextBox
+			// 
+			this.soundfontTextBox.Location = new System.Drawing.Point(99, 8);
+			this.soundfontTextBox.Name = "soundfontTextBox";
+			this.soundfontTextBox.Size = new System.Drawing.Size(200, 20);
+			this.soundfontTextBox.TabIndex = 1;
+			this.soundfontTextBox.TextChanged += new System.EventHandler(this.soundfontTextBox_TextChanged);
 			// 
 			// tabPage1
 			// 
@@ -86,7 +128,8 @@
 			// 
 			this.tableLayoutPanel1.AutoSize = true;
 			this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.tableLayoutPanel1.ColumnCount = 3;
+			this.tableLayoutPanel1.ColumnCount = 4;
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -113,7 +156,8 @@
 			// 
 			this.tableLayoutPanel2.AutoSize = true;
 			this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.tableLayoutPanel2.ColumnCount = 3;
+			this.tableLayoutPanel2.ColumnCount = 4;
+			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -140,7 +184,8 @@
 			// 
 			this.tableLayoutPanel3.AutoSize = true;
 			this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.tableLayoutPanel3.ColumnCount = 3;
+			this.tableLayoutPanel3.ColumnCount = 4;
+			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -167,7 +212,8 @@
 			// 
 			this.tableLayoutPanel4.AutoSize = true;
 			this.tableLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.tableLayoutPanel4.ColumnCount = 3;
+			this.tableLayoutPanel4.ColumnCount = 4;
+			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
 			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
@@ -211,48 +257,6 @@
 			this.setAllToMIDIToolStripMenuItem.Text = "Set All to &MIDI";
 			this.setAllToMIDIToolStripMenuItem.Click += new System.EventHandler(this.setAllToMIDIToolStripMenuItem_Click);
 			// 
-			// tabPage5
-			// 
-			this.tabPage5.Controls.Add(soundfontBrowseButton);
-			this.tabPage5.Controls.Add(this.soundfontTextBox);
-			this.tabPage5.Controls.Add(label1);
-			this.tabPage5.Location = new System.Drawing.Point(4, 22);
-			this.tabPage5.Name = "tabPage5";
-			this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage5.Size = new System.Drawing.Size(576, 512);
-			this.tabPage5.TabIndex = 4;
-			this.tabPage5.Text = "Settings";
-			this.tabPage5.UseVisualStyleBackColor = true;
-			// 
-			// label1
-			// 
-			label1.AutoSize = true;
-			label1.Location = new System.Drawing.Point(8, 11);
-			label1.Name = "label1";
-			label1.Size = new System.Drawing.Size(85, 13);
-			label1.TabIndex = 0;
-			label1.Text = "MIDI Soundfont:";
-			// 
-			// soundfontTextBox
-			// 
-			this.soundfontTextBox.Location = new System.Drawing.Point(99, 8);
-			this.soundfontTextBox.Name = "soundfontTextBox";
-			this.soundfontTextBox.Size = new System.Drawing.Size(200, 20);
-			this.soundfontTextBox.TabIndex = 1;
-			this.soundfontTextBox.TextChanged += new System.EventHandler(this.soundfontTextBox_TextChanged);
-			// 
-			// soundfontBrowseButton
-			// 
-			soundfontBrowseButton.AutoSize = true;
-			soundfontBrowseButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			soundfontBrowseButton.Location = new System.Drawing.Point(305, 6);
-			soundfontBrowseButton.Name = "soundfontBrowseButton";
-			soundfontBrowseButton.Size = new System.Drawing.Size(26, 23);
-			soundfontBrowseButton.TabIndex = 2;
-			soundfontBrowseButton.Text = "...";
-			soundfontBrowseButton.UseVisualStyleBackColor = true;
-			soundfontBrowseButton.Click += new System.EventHandler(this.soundfontBrowseButton_Click);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -266,6 +270,8 @@
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.tabControl1.ResumeLayout(false);
+			this.tabPage5.ResumeLayout(false);
+			this.tabPage5.PerformLayout();
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
 			this.tabPage2.ResumeLayout(false);
@@ -276,8 +282,6 @@
 			this.tabPage4.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
-			this.tabPage5.ResumeLayout(false);
-			this.tabPage5.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

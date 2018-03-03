@@ -188,7 +188,7 @@ namespace MusicConfigTool
 
 		List<TrackInfoInternal> TrackOptions = new List<TrackInfoInternal>();
 
-		static readonly List<ComboBox>[] comboboxes = new List<ComboBox>[4];
+		static readonly List<TextBox>[] textboxes = new List<TextBox>[4];
 
 		private void MainForm_Load(object sender, EventArgs e)
 		{
@@ -213,25 +213,50 @@ namespace MusicConfigTool
 				SettingsGame group = settings.Music[game];
 				TableLayoutPanel table = tables[gn];
 				table.SuspendLayout();
-				comboboxes[gn] = new List<ComboBox>();
+				textboxes[gn] = new List<TextBox>();
 				for (int tn = 0; tn < TrackOptions.Count; tn++)
 				{
 					string track = TrackOptions[tn].Key;
 					table.Controls.Add(new Label() { Text = TrackOptions[tn].Name + ":", AutoSize = true, TextAlign = ContentAlignment.MiddleLeft }, 0, tn);
-					ComboBox cb = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDown, AutoCompleteMode = AutoCompleteMode.SuggestAppend, AutoCompleteSource = AutoCompleteSource.ListItems, Width = 300 };
-					cb.Items.AddRange(new[] { "Default", "MIDI" });
+					List<string> list = new List<string>() { "MIDI" };
 					if (gn == 1)
 					{
 						if (TrackOptions[tn].EnableByCharacter)
-							cb.Items.Add("ByCharacter");
+							list.Add("ByCharacter");
 						if (TrackOptions[tn].EnableByZone)
-							cb.Items.Add("ByZone");
+							list.Add("ByZone");
 					}
-					cb.Items.AddRange(smpsSongs);
-					table.Controls.Add(cb, 1, tn);
-					comboboxes[gn].Add(cb);
-					Button btn = new Button() { AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Text = "File..." };
+					list.AddRange(smpsSongs);
+					TextBox tb = new TextBox() { AutoCompleteMode = AutoCompleteMode.Suggest, AutoCompleteSource = AutoCompleteSource.CustomSource, Width = 300 };
+					tb.AutoCompleteCustomSource = new AutoCompleteStringCollection();
+					tb.AutoCompleteCustomSource.AddRange(list.ToArray());
+					tb.AutoCompleteCustomSource.AddRange(Directory.EnumerateFiles(Environment.CurrentDirectory).Where(a =>
+					{
+						switch (Path.GetExtension(a).ToLowerInvariant())
+						{
+							case ".exe":
+							case ".dll":
+							case ".pdb":
+							case ".config":
+							case ".ini":
+							case ".txt":
+								return false;
+							default:
+								return true;
+						}
+					}).Select(a => a.Substring(Environment.CurrentDirectory.Length + 1)).ToArray());
+					table.Controls.Add(tb, 1, tn);
+					textboxes[gn].Add(tb);
+					Button btn = new Button() { AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Text = "List..." };
 					btn.Click += new EventHandler((s, ev) => 
+					{
+						using (ListDialog dlg = new ListDialog(list))
+							if (dlg.ShowDialog(this) == DialogResult.OK)
+								tb.Text = dlg.SelectedItem;
+					});
+					table.Controls.Add(btn, 2, tn);
+					btn = new Button() { AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Text = "File..." };
+					btn.Click += new EventHandler((s, ev) =>
 					{
 						using (OpenFileDialog dlg = new OpenFileDialog() { Filter = "Common Music Files|*.mid;*.midi;*.adx;*.aax;*.brstm;*.bcstm;*.ogg;*.mp3;*.logg;*.wav|All Files|*.*", InitialDirectory = Environment.CurrentDirectory, RestoreDirectory = true })
 							if (dlg.ShowDialog(this) == DialogResult.OK)
@@ -239,20 +264,17 @@ namespace MusicConfigTool
 								string fn = dlg.FileName;
 								if (fn.StartsWith(Environment.CurrentDirectory))
 									fn = fn.Substring(Environment.CurrentDirectory.Length + 1);
-								cb.Text = fn;
+								tb.Text = fn;
 							}
 					});
-					table.Controls.Add(btn, 2, tn);
+					table.Controls.Add(btn, 3, tn);
 					if (!group.Tracks.ContainsKey(track))
-					{
-						group.Tracks.Add(track, "Default");
-						cb.SelectedIndex = 0;
-					}
+						group.Tracks.Add(track, string.Empty);
 					else
-						cb.Text = group.Tracks[track];
+						tb.Text = group.Tracks[track];
 					if (tn > 0)
 						table.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-					cb.TextChanged += new EventHandler((s, ev) => group.Tracks[track] = cb.Text);
+					tb.TextChanged += new EventHandler((s, ev) => group.Tracks[track] = tb.Text);
 				}
 				table.ResumeLayout();
 			}
@@ -260,14 +282,14 @@ namespace MusicConfigTool
 
 		private void setAllToDefaultToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			foreach (ComboBox cb in comboboxes[tabControl1.SelectedIndex])
-				cb.SelectedIndex = 0;
+			foreach (TextBox tb in textboxes[tabControl1.SelectedIndex - 1])
+				tb.Text = string.Empty;
 		}
 
 		private void setAllToMIDIToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			foreach (ComboBox cb in comboboxes[tabControl1.SelectedIndex])
-				cb.SelectedIndex = 1;
+			foreach (TextBox tb in textboxes[tabControl1.SelectedIndex - 1])
+				tb.Text = "MIDI";
 		}
 
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -276,7 +298,7 @@ namespace MusicConfigTool
 			{
 				SettingsGame group = settings.Music[game];
 				foreach (string track in TrackOptions.Select(a => a.Key))
-					if (group.Tracks[track].Equals("Default", StringComparison.OrdinalIgnoreCase) || group.Tracks[track].Length == 0)
+					if (group.Tracks[track].Length == 0)
 						group.Tracks.Remove(track);
 				if (group.Tracks.Count == 0)
 					settings.Music.Remove(game);
