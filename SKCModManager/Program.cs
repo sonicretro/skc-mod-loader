@@ -27,7 +27,7 @@ namespace SKCModManager
 			if (args.Length > 0 && args[0] == "urlhandler")
 			{
 				using (var hkcr = Registry.ClassesRoot)
-				using (var key = hkcr.CreateSubKey("sadxmm"))
+				using (var key = hkcr.CreateSubKey("skcmm"))
 				{
 					key.SetValue(null, "URL:S&KC Mod Manager Protocol");
 					key.SetValue("URL Protocol", string.Empty);

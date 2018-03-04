@@ -133,7 +133,7 @@ namespace SKCModManager
 
 			Activate();
 
-			var fields = uri.Substring("sadxmm:".Length).Split(',');
+			var fields = uri.Substring("skcmm:".Length).Split(',');
 
 			// TODO: lib-ify
 			string itemType = fields.FirstOrDefault(x => x.StartsWith("gb_itemtype", StringComparison.InvariantCultureIgnoreCase));
