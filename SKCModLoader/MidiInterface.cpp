@@ -418,10 +418,10 @@ checkbycharbyzone:
 		if (filenames[newid].empty()) // use default MIDI
 		{
 			HRSRC hres = FindResource(moduleHandle, MAKEINTRESOURCE((!bgmmode ? IDR_MIDI_FM1 : IDR_MIDI_GM1) + id), !bgmmode ? _T("MIDI_FM") : _T("MIDI_GM"));
-			midichan = BASS_MIDI_StreamCreateFile(TRUE, LockResource(LoadResource(moduleHandle, hres)), 0, SizeofResource(moduleHandle, hres), BASS_MIDI_DECAYEND | BASS_MIDI_DECAYSEEK, 0);
+			midichan = BASS_MIDI_StreamCreateFile(TRUE, LockResource(LoadResource(moduleHandle, hres)), 0, SizeofResource(moduleHandle, hres), BASS_MIDI_DECAYEND | BASS_MIDI_DECAYSEEK | BASS_MIDI_NOCROP, 0);
 		}
 		else
-			midichan = BASS_MIDI_StreamCreateFile(false, filenames[newid].c_str(), 0, 0, BASS_MIDI_DECAYEND | BASS_MIDI_DECAYSEEK, 0);
+			midichan = BASS_MIDI_StreamCreateFile(false, filenames[newid].c_str(), 0, 0, BASS_MIDI_DECAYEND | BASS_MIDI_DECAYSEEK | BASS_MIDI_NOCROP, 0);
 		if (midichan != 0)
 		{
 			BASS_ChannelSetSync(midichan, BASS_SYNC_END, 0, BASS_onTrackEnd, this);
