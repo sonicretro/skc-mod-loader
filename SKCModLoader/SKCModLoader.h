@@ -413,7 +413,7 @@ VoidFunc(LoadSpecialStageMap, 0x69E3FF);
 #define ptrdecl(address,data) { (void*)address, (void*)data }
 
 // S&KC Mod Loader API version.
-static const int ModLoaderVer = 1;
+static const int ModLoaderVer = 2;
 
 struct PatchInfo
 {
@@ -445,14 +445,28 @@ struct HelperFunctions_v1
 	// The version of the structure.
 	int Version;
 	// Registers a new PLC list.
-	int (__cdecl *RegisterPLCList)(const PLC *plcs, int length);
+	int(__cdecl *RegisterPLCList)(const PLC *plcs, int length);
 	// Retrieves a PLC list.
 	const PLC *(__cdecl *GetPLCList)(int index, int &length);
 	// Sets a PLC list.
-	BOOL (__cdecl *SetPLCList)(int index, const PLC *plcs, int length);
+	BOOL(__cdecl *SetPLCList)(int index, const PLC *plcs, int length);
 };
 
-typedef HelperFunctions_v1 HelperFunctions;
+struct HelperFunctions_v2
+{
+	// The version of the structure.
+	int Version;
+	// Registers a new PLC list.
+	int(__cdecl *RegisterPLCList)(const PLC *plcs, int length);
+	// Retrieves a PLC list.
+	const PLC *(__cdecl *GetPLCList)(int index, int &length);
+	// Sets a PLC list.
+	BOOL(__cdecl *SetPLCList)(int index, const PLC *plcs, int length);
+	// Prints a message to the log.
+	int(__cdecl *PrintDebug)(const char *format, ...);
+};
+
+typedef HelperFunctions_v2 HelperFunctions;
 
 typedef void(__cdecl *ModInitFunc)(const wchar_t *path, const HelperFunctions &helperFunctions);
 

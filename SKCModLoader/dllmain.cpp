@@ -65,7 +65,7 @@ static FILE *dbgFile = nullptr;
  * @param args Arguments.
  * @return Return value from vsnprintf().
  */
-static int __cdecl PrintDebug(const char *Format, ...)
+int __cdecl PrintDebug(const char *Format, ...)
 {
 	va_list ap;
 	va_start(ap, Format);
@@ -164,7 +164,8 @@ static const HelperFunctions helperFunctions =
 	ModLoaderVer,
 	RegisterPLCList,
 	GetPLCList,
-	SetPLCList
+	SetPLCList,
+	PrintDebug
 };
 
 static vector<string> &split(const string &s, char delim, vector<string> &elems) {
