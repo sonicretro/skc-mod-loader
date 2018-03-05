@@ -94,6 +94,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FramerateFix.h" />
     <ClInclude Include="MidiInterface.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SKCModLoader.h" />
@@ -109,6 +110,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="FramerateFix.cpp" />
     <ClCompile Include="MidiInterface.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

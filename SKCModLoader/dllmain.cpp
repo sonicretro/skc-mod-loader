@@ -30,6 +30,7 @@ using std::vector;
 #include "TextConv.hpp"
 #include "CodeParser.hpp"
 #include "MidiInterface.h"
+#include "FramerateFix.h"
 
 // Code Parser.
 static CodeParser codeParser;
@@ -534,6 +535,8 @@ static void __cdecl InitMods(void)
 	// TODO: Get .text address and length dynamically.
 	DWORD oldprot;
 	VirtualProtect((void *)0x401000, 0x427C00, PAGE_EXECUTE_WRITECOPY, &oldprot);
+
+	InitFramerateFix();
 
 	vector<std::pair<ModInitFunc, wstring>> initfuncs;
 
