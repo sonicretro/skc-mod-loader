@@ -23,7 +23,11 @@ MidiInterface::MidiInterface(HMODULE moduleHandle)
 	this->moduleHandle = moduleHandle;
 	SMPS_InitializeDriver();
 	bassinit = BASS_Init(-1, 44100, 0, nullptr, nullptr) ? true : false;
-	BASS_SetConfigPtr(BASS_CONFIG_MIDI_DEFFONT, "Music\\CT8MGM.SF2");
+	if (bassinit)
+	{
+		BASS_SetConfigPtr(BASS_CONFIG_MIDI_DEFFONT, "Music\\CT8MGM.SF2");
+		BASS_PluginLoad("bassflac.dll", 0);
+	}
 	musicFolders.push_back("Music\\");
 	TIMECAPS tc;
 	timeGetDevCaps(&tc, sizeof(tc));
@@ -556,9 +560,9 @@ BOOL MidiInterface::resumeSong()
 	return TRUE;
 }
 
-BOOL MidiInterface::setTempo(unsigned int pct)
+BOOL MidiInterface::setTempo(unsigned int delay)
 {
-	double multi = 100.0 / pct;
+	double multi = 100.0 / delay;
 	switch (trackType)
 	{
 	case TrackType_MIDI:
