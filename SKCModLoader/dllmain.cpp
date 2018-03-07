@@ -427,12 +427,6 @@ static const unordered_map<string, void(__cdecl *)(const IniGroup *, const wstri
 	{ "palette", ProcessPaletteINI }
 };
 
-bool IsDirectory(const string& path)
-{
-	const DWORD attrs = GetFileAttributesA(path.c_str());
-	return (attrs != INVALID_FILE_ATTRIBUTES && (attrs & FILE_ATTRIBUTE_DIRECTORY));
-}
-
 string savepath;
 void __cdecl ReadSaveFile()
 {
@@ -544,7 +538,7 @@ static void __cdecl InitMods(void)
 	GetModuleFileNameA(NULL, pathbufA, MAX_PATH);
 	string exepathA = pathbufA;
 	ReplaceFileExtension(exepathA, ".ini");
-	WriteData((const char**)0x401601, exepathA.c_str()));
+	WriteData((const char**)0x401601, exepathA.c_str());
 
 	vector<std::pair<ModInitFunc, wstring>> initfuncs;
 

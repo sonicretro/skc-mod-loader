@@ -10,6 +10,7 @@
 #include "resource.h"
 #include "MidiInterface.h"
 #include "SKCModLoader.h"
+#include "FileSystem.h"
 
 using std::string;
 
@@ -40,22 +41,6 @@ MidiInterface::~MidiInterface()
 	SMPS_DeInitializeDriver();
 	BASS_Free();
 	timeEndPeriod(timePeriod);
-}
-
-string GetExtension(const string& path, bool includeDot)
-{
-	auto dot = path.find('.');
-	if (dot == string::npos)
-	{
-		return string();
-	}
-
-	if (!includeDot)
-	{
-		++dot;
-	}
-
-	return path.substr(dot);
 }
 
 const char *const TrackOptions[] = {
