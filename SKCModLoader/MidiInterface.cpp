@@ -273,7 +273,7 @@ BOOL MidiInterface::loadSong(short id, unsigned int bgmmode)
 	bool is1up = id == MusicID_S31Up || id == MusicID_SK1Up;
 	if (is1up)
 	{
-		if (!playing1up)
+		if (playing1up)
 		{
 			switch (trackType)
 			{
