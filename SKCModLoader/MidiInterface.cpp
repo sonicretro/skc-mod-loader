@@ -613,4 +613,5 @@ void MidiInterface::songStopped()
 	}
 	trackType = lastTrackType;
 	lastTrackType = TrackType_None;
+	playing1up = false;
 }
