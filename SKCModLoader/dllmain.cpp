@@ -538,7 +538,7 @@ static void __cdecl InitMods(void)
 	GetModuleFileNameA(NULL, pathbufA, MAX_PATH);
 	string exepathA = pathbufA;
 	ReplaceFileExtension(exepathA, ".ini");
-	WriteData((const char**)0x401601, exepathA.c_str());
+	WriteData((char**)0x401601, strdup(exepathA.c_str()));
 
 	vector<std::pair<ModInitFunc, wstring>> initfuncs;
 
