@@ -533,13 +533,6 @@ static void __cdecl InitMods(void)
 
 	InitFramerateFix();
 
-	// Make game read INI file from application directory
-	char pathbufA[MAX_PATH];
-	GetModuleFileNameA(NULL, pathbufA, MAX_PATH);
-	string exepathA = pathbufA;
-	ReplaceFileExtension(exepathA, ".ini");
-	WriteData((char**)0x401601, strdup(exepathA.c_str()));
-
 	vector<std::pair<ModInitFunc, wstring>> initfuncs;
 
 	// It's mod loading time!
