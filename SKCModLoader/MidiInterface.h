@@ -63,5 +63,6 @@ private:
 	DWORD lastbasschan = 0;
 	DWORD lastmidichan = 0;
 	int lastmidiloopstart;
+	bool playing1up = false;
 };
 

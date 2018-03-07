@@ -273,18 +273,41 @@ BOOL MidiInterface::loadSong(short id, unsigned int bgmmode)
 	bool is1up = id == MusicID_S31Up || id == MusicID_SK1Up;
 	if (is1up)
 	{
-		lastTrackType = trackType;
-		switch (trackType)
+		if (!playing1up)
 		{
-		case TrackType_MIDI:
-			lastmidichan = midichan;
-			lastmidiloopstart = midiloopstart;
-			BASS_ChannelPause(midichan);
-			break;
-		case TrackType_VGMStream:
-			lastbasschan = basschan;
-			BASS_ChannelPause(basschan);
-			break;
+			switch (trackType)
+			{
+			case TrackType_MIDI:
+				if (midichan != 0)
+				{
+					BASS_ChannelStop(midichan);
+					BASS_StreamFree(midichan);
+				}
+				break;
+			case TrackType_VGMStream:
+				if (basschan != 0)
+				{
+					BASS_ChannelStop(basschan);
+					BASS_StreamFree(basschan);
+				}
+				break;
+			}
+		}
+		else
+		{
+			lastTrackType = trackType;
+			switch (trackType)
+			{
+			case TrackType_MIDI:
+				lastmidichan = midichan;
+				lastmidiloopstart = midiloopstart;
+				BASS_ChannelPause(midichan);
+				break;
+			case TrackType_VGMStream:
+				lastbasschan = basschan;
+				BASS_ChannelPause(basschan);
+				break;
+			}
 		}
 	}
 	else
@@ -311,6 +334,7 @@ BOOL MidiInterface::loadSong(short id, unsigned int bgmmode)
 			break;
 		}
 	}
+	playing1up = is1up;
 	int newid = id;
 	switch (newid)
 	{
