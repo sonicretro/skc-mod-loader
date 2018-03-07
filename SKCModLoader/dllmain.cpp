@@ -29,6 +29,7 @@ using std::vector;
 #include "IniFile.hpp"
 #include "TextConv.hpp"
 #include "CodeParser.hpp"
+#include "FileSystem.h"
 #include "MidiInterface.h"
 #include "FramerateFix.h"
 
@@ -537,6 +538,13 @@ static void __cdecl InitMods(void)
 	VirtualProtect((void *)0x401000, 0x427C00, PAGE_EXECUTE_WRITECOPY, &oldprot);
 
 	InitFramerateFix();
+
+	// Make game read INI file from application directory
+	char pathbufA[MAX_PATH];
+	GetModuleFileNameA(NULL, pathbufA, MAX_PATH);
+	string exepathA = pathbufA;
+	ReplaceFileExtension(exepathA, ".ini");
+	WriteData((const char**)0x401601, exepathA.c_str()));
 
 	vector<std::pair<ModInitFunc, wstring>> initfuncs;
 
