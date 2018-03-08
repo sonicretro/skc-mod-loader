@@ -473,13 +473,13 @@ void __cdecl WriteSaveFile()
 	}
 }
 
+MidiInterface *musicobj = nullptr;
 void FixSoundTestStopButton()
 {
 	reg_d0.UByte = 0xE2;
 	musicobj->stopSong();
 }
 
-MidiInterface *musicobj = nullptr;
 static void __cdecl InitMods(void)
 {
 	FILE *f_ini = _wfopen(L"mods\\SKCModLoader.ini", L"r");
