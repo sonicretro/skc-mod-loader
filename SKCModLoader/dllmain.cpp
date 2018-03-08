@@ -473,6 +473,12 @@ void __cdecl WriteSaveFile()
 	}
 }
 
+void FixSoundTestStopButton()
+{
+	reg_d0.UByte = 0xE2;
+	musicobj->stopSong();
+}
+
 MidiInterface *musicobj = nullptr;
 static void __cdecl InitMods(void)
 {
@@ -532,6 +538,8 @@ static void __cdecl InitMods(void)
 	VirtualProtect((void *)0x401000, 0x427C00, PAGE_EXECUTE_WRITECOPY, &oldprot);
 
 	InitFramerateFix();
+
+	WriteCall((void*)0x40B33D, FixSoundTestStopButton);
 
 	vector<std::pair<ModInitFunc, wstring>> initfuncs;
 

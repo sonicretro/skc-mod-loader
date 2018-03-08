@@ -499,6 +499,7 @@ BOOL MidiInterface::playSong()
 	case TrackType_MIDI:
 		return BASS_ChannelPlay(midichan, false);
 	case TrackType_SMPS:
+		SMPS_ResumeSong();
 		return SMPS_PlaySong();
 	case TrackType_VGMStream:
 		return BASS_ChannelPlay(basschan, false);
