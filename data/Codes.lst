@@ -1,0 +1,65 @@
+Patch "Infinite Lives"
+write8 00438805 0xE9
+write32 00438806 0x8F
+
+Patch "Don't Lose Rings When Hit"
+writenop 0076258A 6
+
+Patch "Infinite Time"
+writenop 004126B1 2
+
+Patch "Don't Lose Shield When Hit"
+writenop 00422C34 3
+
+Patch "Keep Rings Between Levels"
+writenop 004167EE 6
+writenop 0041AF0C 6
+
+Patch "Don't Lose Rings When Super/Hyper"
+writenop 00436F02 6
+
+Patch "Can't Drown"
+writenop 0042C4EC 3
+
+Code "Infinite Rings"
+write16 08FFFE20 999
+
+Code "Have All Chaos Emeralds"
+write8 08FFFFB0 7
+
+Code "Have All Super Emeralds"
+write8 08FFFFB1 7
+
+Patch "Tails Can Fly Forever"
+writenop 0043E5CD 3
+
+Patch "Infinite Double Jumps"
+writenop 00436B96 3
+writenop 00436BAF 3
+
+Patch "Infinite Fire Dashes"
+writenop 00436AF7 3
+
+Patch "Infinite Insta-Shields"
+writenop 00436C73 3
+
+Patch "Infinite Hyper Dashes"
+writenop 00436D82 3
+
+Patch "Special Stage: Never Speed Up"
+write16 0069FB16 0xE990
+
+Patch "Special Stage: Remove Speed Cap"
+writenop 0069FB16 6
+
+Patch "Special Stage: Speed Up Twice As Quickly"
+write16 0069FAF1 900
+write16 0069FB04 1350
+write16 0069E1FD 900
+write16 0069E210 1350
+
+Patch "Special Stage: Start At Max Speed"
+write16 0069E1F3 0x2000
+
+Patch "Special Stage: Start At Double Max Speed"
+write16 0069E1F3 0x4000
