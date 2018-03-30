@@ -297,6 +297,66 @@ struct PalPtr
 	uint16_t Size;
 };
 
+struct Object
+{
+	void(__cdecl *code)();
+	char render_flags;
+	char routine;
+	char height_pixels;
+	char width_pixels;
+	__int16 priority;
+	__int16 art_tile;
+	void *mappings;
+	__int16 x_pos;
+	__int16 x_sub;
+	__int16 y_pos;
+	__int16 y_sub;
+	__int16 x_vel;
+	__int16 y_vel;
+	__int16 ground_vel;
+	char y_radius;
+	char x_radius;
+	char anim;
+	char prev_anim;
+	char mapping_frame;
+	char anim_frame;
+	char anim_frame_timer;
+	char double_jump_property;
+	char angle;
+	char flip_angle;
+	char collision_flags;
+	char collision_property;
+	char status;
+	char status_secondary;
+	char air_left;
+	char flip_type;
+	char object_control;
+	char double_jump_flag;
+	char flips_remaining;
+	char flip_speed;
+	__int16 move_lock;
+	char invulnerability_timer;
+	char invincibility_timer;
+	char speed_shoes_timer;
+	char status_tertiary;
+	char character_id;
+	char scroll_delay_counter;
+	char next_tilt;
+	char tilt;
+	char stick_to_convex;
+	char spin_dash_flag;
+	__int16 spin_dash_counter;
+	char jumping;
+	char field_41;
+	__int16 interact;
+	char default_y_radius;
+	char default_x_radius;
+	char top_solid_bit;
+	char lrb_solid_bit;
+	__int16 respawn_addr;
+};
+
+
 union DReg
 {
 	char Byte;
@@ -316,6 +376,7 @@ union AReg
 	unsigned short *UWord;
 	int *Long;
 	unsigned int *ULong;
+	Object *Object;
 };
 
 struct Controller
