@@ -267,6 +267,7 @@ enum PlayerModes
 };
 
 // Structures
+#pragma pack(1)
 struct PLC
 {
 	const void *ArtLoc;
