@@ -118,6 +118,21 @@ namespace SKCModManager
 					gameS3.Checked = true;
 					break;
 			}
+			switch (loaderini.Palette)
+			{
+				case PaletteSetting.Accurate:
+					paletteAccurateButton.Checked = true;
+					break;
+				case PaletteSetting.Linear:
+					paletteLinearButton.Checked = true;
+					break;
+				case PaletteSetting.SKC:
+					paletteSKCButton.Checked = true;
+					break;
+				case PaletteSetting.Old:
+					paletteOldButton.Checked = true;
+					break;
+			}
 			checkUpdateStartup.Checked          = loaderini.UpdateCheck;
 			checkUpdateModsStartup.Checked      = loaderini.ModUpdateCheck;
 			comboUpdateFrequency.SelectedIndex  = (int)loaderini.UpdateUnit;
@@ -825,6 +840,14 @@ namespace SKCModManager
 			loaderini.DebugConsole              = consoleCheckBox.Checked;
 			loaderini.DebugFile                 = fileCheckBox.Checked;
 			loaderini.Game                      = gameS3.Checked ? Game.S3 : (gameSK.Checked ? Game.SK : Game.S3K);
+			if (paletteAccurateButton.Checked)
+				loaderini.Palette = PaletteSetting.Accurate;
+			else if (paletteLinearButton.Checked)
+				loaderini.Palette = PaletteSetting.Linear;
+			else if (paletteSKCButton.Checked)
+				loaderini.Palette = PaletteSetting.SKC;
+			else
+				loaderini.Palette = PaletteSetting.Old;
 			loaderini.UpdateCheck               = checkUpdateStartup.Checked;
 			loaderini.ModUpdateCheck            = checkUpdateModsStartup.Checked;
 			loaderini.UpdateUnit                = (UpdateUnit)comboUpdateFrequency.SelectedIndex;

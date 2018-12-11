@@ -30,7 +30,11 @@
         {
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.GroupBox groupBox2;
+			System.Windows.Forms.GroupBox groupBox3;
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+			this.gameS3 = new System.Windows.Forms.RadioButton();
+			this.gameSK = new System.Windows.Forms.RadioButton();
+			this.gameS3K = new System.Windows.Forms.RadioButton();
 			this.buttonRefreshModList = new System.Windows.Forms.Button();
 			this.modDescription = new System.Windows.Forms.Label();
 			this.modListView = new System.Windows.Forms.ListView();
@@ -73,10 +77,13 @@
 			this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
 			this.developerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.generateManifestToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.gameS3K = new System.Windows.Forms.RadioButton();
-			this.gameSK = new System.Windows.Forms.RadioButton();
-			this.gameS3 = new System.Windows.Forms.RadioButton();
+			this.paletteAccurateButton = new System.Windows.Forms.RadioButton();
+			this.paletteLinearButton = new System.Windows.Forms.RadioButton();
+			this.paletteSKCButton = new System.Windows.Forms.RadioButton();
+			this.paletteOldButton = new System.Windows.Forms.RadioButton();
 			groupBox2 = new System.Windows.Forms.GroupBox();
+			groupBox3 = new System.Windows.Forms.GroupBox();
+			groupBox2.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -85,8 +92,57 @@
 			((System.ComponentModel.ISupportInitialize)(this.numericUpdateFrequency)).BeginInit();
 			this.groupBox1.SuspendLayout();
 			this.modContextMenu.SuspendLayout();
-			groupBox2.SuspendLayout();
+			groupBox3.SuspendLayout();
 			this.SuspendLayout();
+			// 
+			// groupBox2
+			// 
+			groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			groupBox2.AutoSize = true;
+			groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			groupBox2.Controls.Add(this.gameS3);
+			groupBox2.Controls.Add(this.gameSK);
+			groupBox2.Controls.Add(this.gameS3K);
+			groupBox2.Location = new System.Drawing.Point(3, 358);
+			groupBox2.Name = "groupBox2";
+			groupBox2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
+			groupBox2.Size = new System.Drawing.Size(310, 49);
+			groupBox2.TabIndex = 104;
+			groupBox2.TabStop = false;
+			groupBox2.Text = "Game";
+			// 
+			// gameS3
+			// 
+			this.gameS3.AutoSize = true;
+			this.gameS3.Location = new System.Drawing.Point(243, 19);
+			this.gameS3.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+			this.gameS3.Name = "gameS3";
+			this.gameS3.Size = new System.Drawing.Size(61, 17);
+			this.gameS3.TabIndex = 2;
+			this.gameS3.Text = "Sonic 3";
+			this.gameS3.UseVisualStyleBackColor = true;
+			// 
+			// gameSK
+			// 
+			this.gameSK.AutoSize = true;
+			this.gameSK.Location = new System.Drawing.Point(129, 19);
+			this.gameSK.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+			this.gameSK.Name = "gameSK";
+			this.gameSK.Size = new System.Drawing.Size(108, 17);
+			this.gameSK.TabIndex = 1;
+			this.gameSK.Text = "Sonic && Knuckles";
+			this.gameSK.UseVisualStyleBackColor = true;
+			// 
+			// gameS3K
+			// 
+			this.gameS3K.AutoSize = true;
+			this.gameS3K.Location = new System.Drawing.Point(6, 19);
+			this.gameS3K.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+			this.gameS3K.Name = "gameS3K";
+			this.gameS3K.Size = new System.Drawing.Size(117, 17);
+			this.gameS3K.TabIndex = 0;
+			this.gameS3K.Text = "Sonic 3 && Knuckles";
+			this.gameS3K.UseVisualStyleBackColor = true;
 			// 
 			// buttonRefreshModList
 			// 
@@ -312,7 +368,7 @@
 			this.tabPage2.Controls.Add(this.codesCheckedListBox);
 			this.tabPage2.Location = new System.Drawing.Point(4, 22);
 			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Size = new System.Drawing.Size(378, 283);
+			this.tabPage2.Size = new System.Drawing.Size(378, 326);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Codes";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -323,19 +379,20 @@
 			this.codesCheckedListBox.FormattingEnabled = true;
 			this.codesCheckedListBox.Location = new System.Drawing.Point(0, 0);
 			this.codesCheckedListBox.Name = "codesCheckedListBox";
-			this.codesCheckedListBox.Size = new System.Drawing.Size(378, 283);
+			this.codesCheckedListBox.Size = new System.Drawing.Size(378, 326);
 			this.codesCheckedListBox.TabIndex = 0;
 			this.codesCheckedListBox.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.codesCheckedListBox_ItemCheck);
 			// 
 			// tabPage4
 			// 
+			this.tabPage4.Controls.Add(groupBox3);
 			this.tabPage4.Controls.Add(this.installURLHandlerButton);
 			this.tabPage4.Controls.Add(this.groupBox4);
 			this.tabPage4.Controls.Add(this.groupBox1);
 			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Name = "tabPage4";
 			this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage4.Size = new System.Drawing.Size(378, 283);
+			this.tabPage4.Size = new System.Drawing.Size(378, 326);
 			this.tabPage4.TabIndex = 3;
 			this.tabPage4.Text = "Options";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -344,7 +401,7 @@
 			// 
 			this.installURLHandlerButton.AutoSize = true;
 			this.installURLHandlerButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			this.installURLHandlerButton.Location = new System.Drawing.Point(6, 150);
+			this.installURLHandlerButton.Location = new System.Drawing.Point(6, 198);
 			this.installURLHandlerButton.Name = "installURLHandlerButton";
 			this.installURLHandlerButton.Size = new System.Drawing.Size(109, 23);
 			this.installURLHandlerButton.TabIndex = 3;
@@ -362,7 +419,7 @@
 			this.groupBox4.Controls.Add(this.numericUpdateFrequency);
 			this.groupBox4.Controls.Add(this.comboUpdateFrequency);
 			this.groupBox4.Controls.Add(this.checkUpdateStartup);
-			this.groupBox4.Location = new System.Drawing.Point(6, 54);
+			this.groupBox4.Location = new System.Drawing.Point(6, 102);
 			this.groupBox4.Name = "groupBox4";
 			this.groupBox4.Size = new System.Drawing.Size(366, 90);
 			this.groupBox4.TabIndex = 2;
@@ -458,7 +515,7 @@
 			this.groupBox1.Location = new System.Drawing.Point(6, 6);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Size = new System.Drawing.Size(366, 42);
-			this.groupBox1.TabIndex = 1;
+			this.groupBox1.TabIndex = 0;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Debug Messages";
 			// 
@@ -481,7 +538,7 @@
 			this.fileCheckBox.Location = new System.Drawing.Point(82, 19);
 			this.fileCheckBox.Name = "fileCheckBox";
 			this.fileCheckBox.Size = new System.Drawing.Size(48, 18);
-			this.fileCheckBox.TabIndex = 2;
+			this.fileCheckBox.TabIndex = 1;
 			this.fileCheckBox.Text = "File";
 			this.toolTip.SetToolTip(this.fileCheckBox, "Logs debug messages to mods/SKCModLoader.log");
 			this.fileCheckBox.UseVisualStyleBackColor = true;
@@ -560,54 +617,69 @@
 			this.generateManifestToolStripMenuItem.Text = "Generate manifest";
 			this.generateManifestToolStripMenuItem.Click += new System.EventHandler(this.generateManifestToolStripMenuItem_Click);
 			// 
-			// groupBox2
+			// groupBox3
 			// 
-			groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			groupBox2.AutoSize = true;
-			groupBox2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-			groupBox2.Controls.Add(this.gameS3);
-			groupBox2.Controls.Add(this.gameSK);
-			groupBox2.Controls.Add(this.gameS3K);
-			groupBox2.Location = new System.Drawing.Point(3, 358);
-			groupBox2.Name = "groupBox2";
-			groupBox2.Padding = new System.Windows.Forms.Padding(3, 3, 3, 0);
-			groupBox2.Size = new System.Drawing.Size(310, 49);
-			groupBox2.TabIndex = 104;
-			groupBox2.TabStop = false;
-			groupBox2.Text = "Game";
+			groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			groupBox3.Controls.Add(this.paletteOldButton);
+			groupBox3.Controls.Add(this.paletteSKCButton);
+			groupBox3.Controls.Add(this.paletteLinearButton);
+			groupBox3.Controls.Add(this.paletteAccurateButton);
+			groupBox3.Location = new System.Drawing.Point(6, 54);
+			groupBox3.Name = "groupBox3";
+			groupBox3.Size = new System.Drawing.Size(366, 42);
+			groupBox3.TabIndex = 1;
+			groupBox3.TabStop = false;
+			groupBox3.Text = "Palette";
 			// 
-			// gameS3K
+			// paletteAccurateButton
 			// 
-			this.gameS3K.AutoSize = true;
-			this.gameS3K.Location = new System.Drawing.Point(6, 19);
-			this.gameS3K.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-			this.gameS3K.Name = "gameS3K";
-			this.gameS3K.Size = new System.Drawing.Size(117, 17);
-			this.gameS3K.TabIndex = 0;
-			this.gameS3K.Text = "Sonic 3 && Knuckles";
-			this.gameS3K.UseVisualStyleBackColor = true;
+			this.paletteAccurateButton.AutoSize = true;
+			this.paletteAccurateButton.Checked = true;
+			this.paletteAccurateButton.Location = new System.Drawing.Point(6, 19);
+			this.paletteAccurateButton.Name = "paletteAccurateButton";
+			this.paletteAccurateButton.Size = new System.Drawing.Size(68, 17);
+			this.paletteAccurateButton.TabIndex = 0;
+			this.paletteAccurateButton.TabStop = true;
+			this.paletteAccurateButton.Text = "&Accurate";
+			this.toolTip.SetToolTip(this.paletteAccurateButton, "Palette will be accurate to the output of a real Megadrive.");
+			this.paletteAccurateButton.UseVisualStyleBackColor = true;
 			// 
-			// gameSK
+			// paletteLinearButton
 			// 
-			this.gameSK.AutoSize = true;
-			this.gameSK.Location = new System.Drawing.Point(129, 19);
-			this.gameSK.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-			this.gameSK.Name = "gameSK";
-			this.gameSK.Size = new System.Drawing.Size(108, 17);
-			this.gameSK.TabIndex = 1;
-			this.gameSK.Text = "Sonic && Knuckles";
-			this.gameSK.UseVisualStyleBackColor = true;
+			this.paletteLinearButton.AutoSize = true;
+			this.paletteLinearButton.Location = new System.Drawing.Point(80, 19);
+			this.paletteLinearButton.Name = "paletteLinearButton";
+			this.paletteLinearButton.Size = new System.Drawing.Size(54, 17);
+			this.paletteLinearButton.TabIndex = 1;
+			this.paletteLinearButton.TabStop = true;
+			this.paletteLinearButton.Text = "&Linear";
+			this.toolTip.SetToolTip(this.paletteLinearButton, "Palette scales linearly from 0-255.");
+			this.paletteLinearButton.UseVisualStyleBackColor = true;
 			// 
-			// gameS3
+			// paletteSKCButton
 			// 
-			this.gameS3.AutoSize = true;
-			this.gameS3.Location = new System.Drawing.Point(243, 19);
-			this.gameS3.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-			this.gameS3.Name = "gameS3";
-			this.gameS3.Size = new System.Drawing.Size(61, 17);
-			this.gameS3.TabIndex = 2;
-			this.gameS3.Text = "Sonic 3";
-			this.gameS3.UseVisualStyleBackColor = true;
+			this.paletteSKCButton.AutoSize = true;
+			this.paletteSKCButton.Location = new System.Drawing.Point(140, 19);
+			this.paletteSKCButton.Name = "paletteSKCButton";
+			this.paletteSKCButton.Size = new System.Drawing.Size(52, 17);
+			this.paletteSKCButton.TabIndex = 2;
+			this.paletteSKCButton.TabStop = true;
+			this.paletteSKCButton.Text = "&S&&KC";
+			this.toolTip.SetToolTip(this.paletteSKCButton, "Palette scales linearly from 0-238, like the unmodified version.");
+			this.paletteSKCButton.UseVisualStyleBackColor = true;
+			// 
+			// paletteOldButton
+			// 
+			this.paletteOldButton.AutoSize = true;
+			this.paletteOldButton.Location = new System.Drawing.Point(198, 19);
+			this.paletteOldButton.Name = "paletteOldButton";
+			this.paletteOldButton.Size = new System.Drawing.Size(41, 17);
+			this.paletteOldButton.TabIndex = 3;
+			this.paletteOldButton.TabStop = true;
+			this.paletteOldButton.Text = "&Old";
+			this.toolTip.SetToolTip(this.paletteOldButton, "Palette scales linearly from 0-224, like old emulators.");
+			this.paletteOldButton.UseVisualStyleBackColor = true;
 			// 
 			// MainForm
 			// 
@@ -627,6 +699,8 @@
 			this.Text = "S&KC Mod Manager";
 			this.Load += new System.EventHandler(this.MainForm_Load);
 			this.Shown += new System.EventHandler(this.MainForm_Shown);
+			groupBox2.ResumeLayout(false);
+			groupBox2.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			this.tabPage1.PerformLayout();
@@ -639,8 +713,8 @@
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
 			this.modContextMenu.ResumeLayout(false);
-			groupBox2.ResumeLayout(false);
-			groupBox2.PerformLayout();
+			groupBox3.ResumeLayout(false);
+			groupBox3.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -693,5 +767,9 @@
 		private System.Windows.Forms.RadioButton gameS3;
 		private System.Windows.Forms.RadioButton gameSK;
 		private System.Windows.Forms.RadioButton gameS3K;
+		private System.Windows.Forms.RadioButton paletteAccurateButton;
+		private System.Windows.Forms.RadioButton paletteOldButton;
+		private System.Windows.Forms.RadioButton paletteSKCButton;
+		private System.Windows.Forms.RadioButton paletteLinearButton;
 	}
 }

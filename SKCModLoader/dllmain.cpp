@@ -32,6 +32,7 @@ using std::vector;
 #include "FileSystem.h"
 #include "MidiInterface.h"
 #include "FramerateFix.h"
+#include "PaletteFix.h"
 
 // Code Parser.
 static CodeParser codeParser;
@@ -538,6 +539,8 @@ static void __cdecl InitMods(void)
 	VirtualProtect((void *)0x401000, 0x427C00, PAGE_EXECUTE_WRITECOPY, &oldprot);
 
 	InitFramerateFix();
+
+	InitPaletteFix(settings);
 
 	WriteCall((void*)0x40B33D, FixSoundTestStopButton);
 

@@ -96,6 +96,7 @@
   <ItemGroup>
     <ClInclude Include="FramerateFix.h" />
     <ClInclude Include="MidiInterface.h" />
+    <ClInclude Include="PaletteFix.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SKCModLoader.h" />
     <ClInclude Include="stdafx.h" />
@@ -112,6 +113,7 @@
     </ClCompile>
     <ClCompile Include="FramerateFix.cpp" />
     <ClCompile Include="MidiInterface.cpp" />
+    <ClCompile Include="PaletteFix.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
