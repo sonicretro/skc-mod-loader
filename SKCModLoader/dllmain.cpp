@@ -544,6 +544,13 @@ static void __cdecl InitMods(void)
 
 	WriteCall((void*)0x40B33D, FixSoundTestStopButton);
 
+	void **ssmapptr = (void**)0x69EF3A;
+	for (int i = 0; i < 8; i++)
+	{
+		*ssmapptr = (void*)0x8FF5DC0;
+		ssmapptr += 4;
+	}
+
 	vector<std::pair<ModInitFunc, wstring>> initfuncs;
 
 	// It's mod loading time!
