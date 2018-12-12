@@ -153,7 +153,7 @@ const unordered_map<string, const char*> palmodes = {
 
 void InitPaletteFix(const IniGroup *settings)
 {
-	string palmode = settings->getString("", "Palette");
+	string palmode = settings->getString("Palette");
 	transform(palmode.begin(), palmode.end(), palmode.begin(), tolower);
 	auto iter = palmodes.find(palmode);
 	if (iter != palmodes.cend())
