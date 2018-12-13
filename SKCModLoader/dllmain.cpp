@@ -544,12 +544,18 @@ static void __cdecl InitMods(void)
 
 	WriteCall((void*)0x40B33D, FixSoundTestStopButton);
 
+	// Fix Special Stage floor scrolling
 	void **ssmapptr = (void**)0x69EF3A;
 	for (int i = 0; i < 8; i++)
 	{
 		*ssmapptr = (void*)0x8FF5DC0;
 		ssmapptr += 4;
 	}
+
+	// Fix splash art in HCZ
+	unsigned short *splashart = (unsigned short*)0x542F24;
+	for (size_t i = 0; i < 0x9C0; i++)
+		splashart[i] = _byteswap_ushort(splashart[i]);
 
 	vector<std::pair<ModInitFunc, wstring>> initfuncs;
 
