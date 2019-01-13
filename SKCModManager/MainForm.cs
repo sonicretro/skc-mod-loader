@@ -654,7 +654,7 @@ namespace SKCModManager
 					}
 					else if (!string.IsNullOrEmpty(mod.UpdateUrl))
 					{
-						List<ModManifest> localManifest = info.Item3
+						List<ModManifestEntry> localManifest = info.Item3
 							.Where(x => x.State == ModManifestState.Unchanged)
 							.Select(x => x.Current).ToList();
 
@@ -1047,7 +1047,7 @@ namespace SKCModManager
 				{
 					if (result == DialogResult.Yes && File.Exists(manpath))
 					{
-						List<ModManifest> manifest = ModManifest.FromFile(manpath);
+						List<ModManifestEntry> manifest = ModManifest.FromFile(manpath);
 						foreach (var entry in manifest)
 						{
 							var path = Path.Combine(modDir, entry.FilePath);
@@ -1112,7 +1112,7 @@ namespace SKCModManager
 				var modPath = Path.Combine("mods", (string)item.Tag);
 				var manifestPath = Path.Combine(modPath, "mod.manifest");
 
-				List<ModManifest> manifest;
+				List<ModManifestEntry> manifest;
 				List<ModManifestDiff> diff;
 
 				using (var progress = new ManifestDialog(modPath, $"Generating manifest: {(string)item.Tag}", true))
