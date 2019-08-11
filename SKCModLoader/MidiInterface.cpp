@@ -442,7 +442,7 @@ checkbycharbyzone:
 					midiloopstart = mark.pos;
 				else if (!_stricmp(mark.text, "loopEnd"))
 				{
-					BASS_ChannelSetSync(midichan, BASS_SYNC_MIDI_TICK, mark.pos, MIDI_DoLoop, &midiloopstart);
+					BASS_ChannelSetSync(midichan, BASS_SYNC_MIDI_TICK | BASS_SYNC_MIXTIME, mark.pos, MIDI_DoLoop, &midiloopstart);
 					found = true;
 				}
 			}
@@ -452,7 +452,7 @@ checkbycharbyzone:
 				if (BASS_MIDI_StreamGetEventsEx(midichan, -1, 111, events, 0, 2) == 2)
 				{
 					midiloopstart = events[0].tick;
-					BASS_ChannelSetSync(midichan, BASS_SYNC_MIDI_TICK, events[1].tick, MIDI_DoLoop, &midiloopstart);
+					BASS_ChannelSetSync(midichan, BASS_SYNC_MIDI_TICK | BASS_SYNC_MIXTIME, events[1].tick, MIDI_DoLoop, &midiloopstart);
 				}
 			}
 			if (is1up && lastTrackType == TrackType_SMPS)
