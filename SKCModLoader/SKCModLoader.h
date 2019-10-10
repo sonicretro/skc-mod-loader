@@ -1,6 +1,10 @@
 #ifndef SKCMODLOADER_H
 #define SKCMODLOADER_H
 
+#if !defined(_M_IX86) && !defined(__i386__)
+#error Mods must be built targeting 32-bit x86, change your settings.
+#endif
+
 #include <stdint.h>
 
 #include "Utils.hpp"
