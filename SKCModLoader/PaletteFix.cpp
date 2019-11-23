@@ -11,10 +11,10 @@ using std::transform;
 
 struct Color
 {
-	char B;
-	char G;
-	char R;
-	char X;
+	unsigned char B;
+	unsigned char G;
+	unsigned char R;
+	unsigned char X;
 };
 
 #pragma warning(push)
