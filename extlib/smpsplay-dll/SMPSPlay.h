@@ -34,6 +34,7 @@ extern "C"
 	SMPSPlay_API void SMPS_SetVolume(double volume);
 	SMPSPlay_API void SMPS_SetWaveLogPath(const char *logfile);
 	SMPSPlay_API void SMPS_RegisterSongLoopCallback(SMPS_CB_SIGNAL func);
+	SMPSPlay_API void SMPS_EnableFMDrums(bool enable);
 
 
 #ifdef __cplusplus
