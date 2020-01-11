@@ -26,7 +26,7 @@ MidiInterface::MidiInterface(HMODULE moduleHandle)
 	bassinit = BASS_Init(-1, 44100, 0, nullptr, nullptr) ? true : false;
 	if (bassinit)
 	{
-		BASS_SetConfigPtr(BASS_CONFIG_MIDI_DEFFONT, "Music\\CT8MGM.SF2");
+		BASS_SetConfigPtr(BASS_CONFIG_MIDI_DEFFONT, "Music\\OPL-3_FM_128M.sf2");
 		BASS_PluginLoad("bassflac.dll", 0);
 	}
 	musicFolders.push_back("Music\\");
