@@ -39,11 +39,15 @@ static CodeParser codeParser;
 
 static vector<ModFrameFunc> modFrameFuncs;
 
+unordered_map<void*, const void*> ObjArtPtrs;
+unordered_map<void*, const void*> SpriteArtPtrs;
 static void __cdecl ProcessCodes_i()
 {
 	codeParser.processCodeList();
 	for (unsigned int i = 0; i < modFrameFuncs.size(); i++)
 		modFrameFuncs[i]();
+	ObjArtPtrs.clear();
+	SpriteArtPtrs.clear();
 }
 
 ThiscallFunctionPointer(void, sub_403101, (void*), 0x403101);
@@ -55,6 +59,86 @@ __declspec(naked) void ProcessCodes()
 		call ProcessCodes_i
 		pop ecx
 		jmp sub_403101
+	}
+}
+
+PCSpriteTableEntry* ConvertSpriteTable_Main(MDSpriteTableEntry* sprite_table_addr, PCSpriteTableEntry* sprite_table_dest)
+{
+	while (sprite_table_addr->link_field
+		&& (sprite_table_addr->y_pos || sprite_table_addr->render_info || sprite_table_addr->x_pos))
+	{
+		sprite_table_dest->x_pos = (unsigned __int16)sprite_table_addr->x_pos - 128;
+		sprite_table_dest->y_pos = (unsigned __int16)sprite_table_addr->y_pos - 128;
+		sprite_table_dest->h_cells = ((unsigned __int8)(sprite_table_addr->sprite_size & 0xC) >> 2) + 1;
+		sprite_table_dest->v_pixels = 8 * (sprite_table_addr->sprite_size & 3) + 8;
+		sprite_table_dest->render_flags = ((unsigned __int16)(sprite_table_addr->render_info & 0x8000) >> 8) | ((unsigned __int16)(sprite_table_addr->render_info & 0x1800) >> 3) | (((unsigned __int16)(sprite_table_addr->render_info & 0x6000) >> 9) + 16);
+		auto iter = SpriteArtPtrs.find(sprite_table_addr);
+		if (iter != SpriteArtPtrs.cend())
+			sprite_table_dest->art_addr = (char*)iter->second;
+		else
+			sprite_table_dest->art_addr = start_of_VRAM;
+		sprite_table_dest->art_addr += 32 * (sprite_table_addr->render_info & 0x7FF);
+		++SpritesProcessed;
+		++sprite_table_dest;
+		++sprite_table_addr;
+	}
+	return sprite_table_dest;
+}
+
+PCSpriteTableEntry* __cdecl ConvertSpriteTable_r(MDSpriteTableEntry* sprite_table_addr, PCSpriteTableEntry* sprite_table_dest)
+{
+	SpritesProcessed = 0;
+	P2SpriteTableProcessed = 0;
+	return ConvertSpriteTable_Main(sprite_table_addr, sprite_table_dest);
+}
+
+PCSpriteTableEntry* __cdecl ConvertSpriteTable_P2_r(MDSpriteTableEntry* sprite_table_addr, PCSpriteTableEntry* sprite_table_dest)
+{
+	P2SpriteTableProcessed = 1;
+	sprite_table_dest->x_pos = 0;
+	sprite_table_dest->y_pos = 0;
+	sprite_table_dest->h_cells = 1;
+	sprite_table_dest->v_pixels = 8;
+	sprite_table_dest->render_flags = 0x10000;
+	sprite_table_dest->art_addr = start_of_VRAM;
+	++SpritesProcessed;
+	return ConvertSpriteTable_Main(sprite_table_addr, sprite_table_dest + 1);
+}
+
+void SpriteFunc()
+{
+	auto iter = ObjArtPtrs.find(reg_a0.Unknown);
+	if (iter != ObjArtPtrs.cend())
+	{
+		auto ptr = iter->second;
+		MDSpriteTableEntry* ste = (MDSpriteTableEntry*)reg_a6.Unknown;
+		int cnt = reg_d4.Word + 1;
+		for (int i = 0; i < cnt; ++i)
+			SpriteArtPtrs.insert({ &ste[i], ptr });
+	}
+}
+
+const void* loc_41FACD = (const void*)0x41FACD;
+__declspec(naked) void SpriteFunc1()
+{
+	__asm
+	{
+		call SpriteFunc
+		mov eax, 0x8549BC
+		mov al, byte ptr [eax]
+		jmp [loc_41FACD]
+	}
+}
+
+const void* loc_4201B8 = (const void*)0x4201B8;
+__declspec(naked) void SpriteFunc2()
+{
+	__asm
+	{
+		call SpriteFunc
+		mov eax, 0x8549BC
+		mov al, byte ptr[eax]
+		jmp [loc_4201B8]
 	}
 }
 
@@ -162,13 +246,19 @@ static BOOL SetPLCList(int index, const PLC *plcs, int length)
 		return false;
 }
 
+void RegisterObjArtPtr(const void* art)
+{
+	ObjArtPtrs[reg_a0.Object] = art;
+}
+
 static const HelperFunctions helperFunctions =
 {
 	ModLoaderVer,
 	RegisterPLCList,
 	GetPLCList,
 	SetPLCList,
-	PrintDebug
+	PrintDebug,
+	RegisterObjArtPtr
 };
 
 static vector<string> &split(const string &s, char delim, vector<string> &elems) {
@@ -544,6 +634,12 @@ static void __cdecl InitMods(void)
 
 	WriteCall((void*)0x40B33D, FixSoundTestStopButton);
 
+	// Sprite art extension
+	WriteJump((void*)0x41FAC8, SpriteFunc1);
+	WriteJump((void*)0x4201B3, SpriteFunc2);
+	WriteJump((void*)0x4049EB, ConvertSpriteTable_r);
+	WriteJump((void*)0x404B1A, ConvertSpriteTable_P2_r);
+
 	// Fix Special Stage floor scrolling
 	void **ssmapptr = (void**)0x69EF3A;
 	for (int i = 0; i < 8; i++)
@@ -679,7 +775,7 @@ static void __cdecl InitMods(void)
 		WriteJump((void*)0x404ECE, WriteSaveFile);
 	}
 
-	for (auto a : initfuncs)
+	for (auto &a : initfuncs)
 		a.first(a.second.c_str(), helperFunctions);
 
 	if (PLCList.size() > 0)

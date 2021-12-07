@@ -136,7 +136,7 @@ static inline BOOL WriteData(void *address, char data, int count)
 }
 
 #if (defined(__i386__) || defined(_M_IX86)) && \
-    !(defined(__x86_64__) || defined(_M_X64))
+	!(defined(__x86_64__) || defined(_M_X64))
 /**
 * Write a JMP instruction to an arbitrary address.
 * @param writeaddress Address to insert the JMP instruction.
@@ -389,6 +389,26 @@ struct Controller
 	char Press;
 };
 
+struct MDSpriteTableEntry
+{
+	__int16 y_pos;
+	char sprite_size;
+	char link_field;
+	__int16 render_info;
+	__int16 x_pos;
+};
+
+struct PCSpriteTableEntry
+{
+	int x_pos;
+	int y_pos;
+	int h_cells;
+	int v_pixels;
+	int render_flags;
+	char* art_addr;
+	int unused[2];
+};
+
 // Data pointer and array declarations.
 #define DataPointer(type, name, address) \
 	static type &name = *(type *)address
@@ -414,6 +434,8 @@ DataPointer(int, Sonic3Mode, 0x831180);
 DataPointer(int, ModeSelection, 0x831184);
 // 0 - S3K, 1 - S&K, 2 - S3
 DataPointer(int, GameSelection, 0x831188);
+DataPointer(int, SpritesProcessed, 0x831740);
+DataPointer(int, P2SpriteTableProcessed, 0x831750);
 DataPointer(AReg, reg_a0, 0x8547C0);
 DataPointer(AReg, reg_a1, 0x8547C8);
 DataPointer(AReg, reg_a2, 0x8547CC);
@@ -429,6 +451,7 @@ DataPointer(DReg, reg_d4, 0x8549B4);
 DataPointer(DReg, reg_d5, 0x8549B8);
 DataPointer(DReg, reg_d6, 0x8549BC);
 DataPointer(DReg, reg_d7, 0x8549C0);
+DataArray(char, start_of_VRAM, 0x8000000, 1);
 DataArray(char, RAM_start, 0x8FF0000, 1);
 DataPointer(short, SS_start_x, 0x8FFE422);
 DataPointer(short, SS_start_y, 0x8FFE424);
@@ -478,7 +501,7 @@ VoidFunc(LoadSpecialStageMap, 0x69E3FF);
 #define ptrdecl(address,data) { (void*)address, (void*)data }
 
 // S&KC Mod Loader API version.
-static const int ModLoaderVer = 2;
+static const int ModLoaderVer = 3;
 
 struct PatchInfo
 {
@@ -505,19 +528,7 @@ struct PointerList
 	int Count;
 };
 
-struct HelperFunctions_v1
-{
-	// The version of the structure.
-	int Version;
-	// Registers a new PLC list.
-	int(__cdecl *RegisterPLCList)(const PLC *plcs, int length);
-	// Retrieves a PLC list.
-	const PLC *(__cdecl *GetPLCList)(int index, int &length);
-	// Sets a PLC list.
-	BOOL(__cdecl *SetPLCList)(int index, const PLC *plcs, int length);
-};
-
-struct HelperFunctions_v2
+struct HelperFunctions
 {
 	// The version of the structure.
 	int Version;
@@ -528,10 +539,12 @@ struct HelperFunctions_v2
 	// Sets a PLC list.
 	BOOL(__cdecl *SetPLCList)(int index, const PLC *plcs, int length);
 	// Prints a message to the log.
+	// Requires version 2 or higher.
 	int(__cdecl *PrintDebug)(const char *format, ...);
+	// Registers a custom art pointer for an object.
+	// Requires version 3 or higher.
+	void(__cdecl *RegisterObjArtPtr)(const void *art);
 };
-
-typedef HelperFunctions_v2 HelperFunctions;
 
 typedef void(__cdecl *ModInitFunc)(const wchar_t *path, const HelperFunctions &helperFunctions);
 
