@@ -11,6 +11,7 @@
 #define WIN32_LEAN_AND_MEAN
 #endif
 #include <windows.h>
+#include <vector>
 
 #ifdef __cplusplus
 // C++ version.
@@ -301,6 +302,88 @@ struct PalPtr
 	uint16_t Size;
 };
 
+struct PatternIndex
+{
+	int16_t Data;
+
+	PatternIndex() {}
+	PatternIndex(int16_t data) { Data = data; }
+	operator int16_t() { return Data; }
+
+	bool GetPriority() { return Data < 0; }
+	void SetPriority(bool pri) { Data = (Data & 0x7FFF) | (pri ? 0x8000 : 0); }
+	uint8_t GetPalette() { return (Data >> 13) & 3; }
+	void SetPalette(uint8_t pal) { Data = (Data & 0x9FFF) | ((pal & 3) << 13); }
+	bool GetYFlip() { return Data & 0x1000; }
+	void SetYFlip(bool yfl) { Data = (Data & 0xEFFF) | (yfl ? 0x1000 : 0); }
+	bool GetXFlip() { return Data & 0x800; }
+	void SetXFlip(bool xfl) { Data = (Data & 0xF7FF) | (xfl ? 0x800 : 0); }
+	uint16_t GetTile() { return Data & 0x7FF; }
+	void SetTile(uint16_t til) { Data = (Data & 0xF800) | (til & 0x7FF); }
+#ifdef _MSC_VER
+	__declspec(property(get = GetPriority, put = SetPriority)) bool Priority;
+	__declspec(property(get = GetPalette, put = SetPalette)) uint8_t Palette;
+	__declspec(property(get = GetYFlip, put = SetYFlip)) bool YFlip;
+	__declspec(property(get = GetXFlip, put = SetXFlip)) bool XFlip;
+	__declspec(property(get = GetTile, put = SetTile)) uint16_t Tile;
+#endif
+};
+
+struct SpritePiece
+{
+	int8_t Y;
+	uint8_t Size;
+	PatternIndex Tile;
+	int16_t X;
+
+	SpritePiece() {}
+
+	uint8_t GetWidth() { return (Size >> 2) & 3; }
+	void SetWidth(uint8_t width) { Size = (Size & 3) | ((width & 3) << 2); }
+	uint8_t GetHeight() { return Size & 3; }
+	void SetHeight(uint8_t height) { Size = (Size & 0xC) | (height & 3); }
+#ifdef _MSC_VER
+	__declspec(property(get = GetWidth, put = SetWidth)) uint8_t Width;
+	__declspec(property(get = GetHeight, put = SetHeight)) uint8_t Height;
+#endif
+};
+
+struct DPLCEntry
+{
+	uint16_t Data;
+
+	DPLCEntry() {}
+	DPLCEntry(uint16_t data) { Data = data; }
+	operator uint16_t() { return Data; }
+
+	uint8_t GetLength() { return (Data & 0xF) + 1; }
+	void SetLength(uint8_t len) { Data = (Data & 0xFFF0) | ((len - 1) & 0xF); }
+	uint16_t GetTile() { return (Data >> 4) & 0xFFF; }
+	void SetTile(uint16_t til) { Data = (Data & 0xF) | ((til & 0xFFF) << 4); }
+#ifdef _MSC_VER
+	__declspec(property(get = GetLength, put = SetLength)) uint8_t Length;
+	__declspec(property(get = GetTile, put = SetTile)) uint16_t Tile;
+#endif
+};
+
+struct PlayerDPLCEntry
+{
+	uint16_t Data;
+
+	PlayerDPLCEntry() {}
+	PlayerDPLCEntry(uint16_t data) { Data = data; }
+	operator uint16_t() { return Data; }
+
+	uint8_t GetLength() { return ((Data >> 12) & 0xF) + 1; }
+	void SetLength(uint8_t len) { Data = (Data & 0xFFF) | (((len - 1) & 0xF) << 12); }
+	uint16_t GetTile() { return Data & 0xFFF; }
+	void SetTile(uint16_t til) { Data = (Data & 0xF000) | (til & 0xFFF); }
+#ifdef _MSC_VER
+	__declspec(property(get = GetLength, put = SetLength)) uint8_t Length;
+	__declspec(property(get = GetTile, put = SetTile)) uint16_t Tile;
+#endif
+};
+
 struct Object
 {
 	void(__cdecl *code)();
@@ -309,7 +392,7 @@ struct Object
 	char height_pixels;
 	char width_pixels;
 	__int16 priority;
-	__int16 art_tile;
+	PatternIndex art_tile;
 	void *mappings;
 	__int16 x_pos;
 	__int16 x_sub;
@@ -497,6 +580,194 @@ VoidFunc(VInt, 0x4050C0);
 FunctionPointer(void *, Kosinski_Decomp, (void *src, void *dst), 0x41028C);
 VoidFunc(LoadSpecialStageMap, 0x69E3FF);
 
+class SpriteMappings
+{
+public:
+	SpriteMappings(intptr_t ptr, int numentries = INT16_MAX / 2) { LoadMappings(ptr, numentries); }
+	SpriteMappings(const void* ptr, int numentries = INT16_MAX / 2) { LoadMappings(ptr, numentries); }
+	void LoadMappings(const void* ptr, int numentries = INT16_MAX / 2) { LoadMappings(reinterpret_cast<intptr_t>(ptr), numentries); }
+
+	void LoadMappings(intptr_t ptr, int numentries = INT16_MAX / 2)
+	{
+		MappingData.clear();
+		const int16_t* off = reinterpret_cast<const int16_t*>(ptr);
+		for (int i = 0; i < numentries; ++i)
+		{
+			intptr_t addr = off[i] + ptr;
+			if (off[i] > 0)
+				numentries = min(numentries, off[i] / 2);
+			int piececnt = *reinterpret_cast<uint16_t*>(addr);
+			std::vector<SpritePiece> pieces(piececnt);
+			if (piececnt > 0)
+				memcpy(pieces.data(), reinterpret_cast<SpritePiece*>(addr + 2), piececnt * sizeof(SpritePiece));
+			MappingData.push_back(pieces);
+		}
+	}
+
+	const void* GetMappingData()
+	{
+		if (mapdata != nullptr)
+		{
+			delete[] mapdata;
+			mapdata = nullptr;
+		}
+		if (MappingData.empty()) return nullptr;
+		size_t size = MappingData.size() * 4;
+		for (auto& item : MappingData)
+			size += item.size() * sizeof(SpritePiece);
+		mapdata = new uint8_t[size];
+		int16_t* offs = reinterpret_cast<int16_t*>(mapdata);
+		uint8_t* spd = mapdata + MappingData.size() * 2;
+		for (auto& item : MappingData)
+		{
+			*(offs++) = spd - mapdata;
+			*reinterpret_cast<uint16_t*>(spd) = static_cast<uint16_t>(item.size());
+			spd += 2;
+			if (item.size() > 0)
+			{
+				memcpy(spd, item.data(), item.size() * sizeof(SpritePiece));
+				spd += item.size() * sizeof(SpritePiece);
+			}
+		}
+		return mapdata;
+	}
+
+	~SpriteMappings()
+	{
+		if (mapdata != nullptr)
+			delete[] mapdata;
+	}
+
+	std::vector<std::vector<SpritePiece>> MappingData;
+
+private:
+	uint8_t* mapdata = nullptr;
+};
+
+class SpriteDPLCs
+{
+public:
+	SpriteDPLCs(intptr_t ptr, int numentries = INT16_MAX / 2) { LoadDPLCs(ptr, numentries); }
+	SpriteDPLCs(const void* ptr, int numentries = INT16_MAX / 2) { LoadDPLCs(ptr, numentries); }
+	void LoadDPLCs(const void* ptr, int numentries = INT16_MAX / 2) { LoadDPLCs(reinterpret_cast<intptr_t>(ptr), numentries); }
+
+	void LoadDPLCs(intptr_t ptr, int numentries = INT16_MAX / 2)
+	{
+		DPLCData.clear();
+		const int16_t* off = reinterpret_cast<const int16_t*>(ptr);
+		for (int i = 0; i < numentries; ++i)
+		{
+			intptr_t addr = off[i] + ptr;
+			if (off[i] > 0)
+				numentries = min(numentries, off[i] / 2);
+			int piececnt = *reinterpret_cast<uint16_t*>(addr) + 1;
+			std::vector<DPLCEntry> pieces(piececnt);
+			memcpy(pieces.data(), reinterpret_cast<DPLCEntry*>(addr + 2), piececnt * sizeof(DPLCEntry));
+			DPLCData.push_back(pieces);
+		}
+	}
+
+	const void* GetDPLCData()
+	{
+		if (mapdata != nullptr)
+		{
+			delete[] mapdata;
+			mapdata = nullptr;
+		}
+		if (DPLCData.empty()) return nullptr;
+		size_t size = DPLCData.size() * 4;
+		for (auto& item : DPLCData)
+			size += item.size() * sizeof(DPLCEntry);
+		mapdata = new uint8_t[size];
+		int16_t* offs = reinterpret_cast<int16_t*>(mapdata);
+		uint8_t* spd = mapdata + DPLCData.size() * 2;
+		for (auto& item : DPLCData)
+		{
+			*(offs++) = spd - mapdata;
+			*reinterpret_cast<uint16_t*>(spd) = static_cast<uint16_t>(item.size() - 1);
+			spd += 2;
+			memcpy(spd, item.data(), item.size() * sizeof(DPLCEntry));
+			spd += item.size() * sizeof(DPLCEntry);
+		}
+		return mapdata;
+	}
+
+	~SpriteDPLCs()
+	{
+		if (mapdata != nullptr)
+			delete[] mapdata;
+	}
+
+	std::vector<std::vector<DPLCEntry>> DPLCData;
+
+private:
+	uint8_t* mapdata = nullptr;
+};
+
+class SpritePlayerDPLCs
+{
+public:
+	SpritePlayerDPLCs(intptr_t ptr, int numentries = INT16_MAX / 2) { LoadDPLCs(ptr, numentries); }
+	SpritePlayerDPLCs(const void* ptr, int numentries = INT16_MAX / 2) { LoadDPLCs(ptr, numentries); }
+	void LoadDPLCs(const void* ptr, int numentries = INT16_MAX / 2) { LoadDPLCs(reinterpret_cast<intptr_t>(ptr), numentries); }
+
+	void LoadDPLCs(intptr_t ptr, int numentries = INT16_MAX / 2)
+	{
+		DPLCData.clear();
+		const int16_t* off = reinterpret_cast<const int16_t*>(ptr);
+		for (int i = 0; i < numentries; ++i)
+		{
+			intptr_t addr = off[i] + ptr;
+			if (off[i] > 0)
+				numentries = min(numentries, off[i] / 2);
+			int piececnt = *reinterpret_cast<uint16_t*>(addr);
+			std::vector<PlayerDPLCEntry> pieces(piececnt);
+			if (piececnt > 0)
+				memcpy(pieces.data(), reinterpret_cast<PlayerDPLCEntry*>(addr + 2), piececnt * sizeof(PlayerDPLCEntry));
+			DPLCData.push_back(pieces);
+		}
+	}
+
+	const void* GetDPLCData()
+	{
+		if (mapdata != nullptr)
+		{
+			delete[] mapdata;
+			mapdata = nullptr;
+		}
+		if (DPLCData.empty()) return nullptr;
+		size_t size = DPLCData.size() * 4;
+		for (auto& item : DPLCData)
+			size += item.size() * sizeof(PlayerDPLCEntry);
+		mapdata = new uint8_t[size];
+		int16_t* offs = reinterpret_cast<int16_t*>(mapdata);
+		uint8_t* spd = mapdata + DPLCData.size() * 2;
+		for (auto& item : DPLCData)
+		{
+			*(offs++) = spd - mapdata;
+			*reinterpret_cast<uint16_t*>(spd) = static_cast<uint16_t>(item.size() - 1);
+			spd += 2;
+			if (item.size() > 0)
+			{
+				memcpy(spd, item.data(), item.size() * sizeof(PlayerDPLCEntry));
+				spd += item.size() * sizeof(PlayerDPLCEntry);
+			}
+		}
+		return mapdata;
+	}
+
+	~SpritePlayerDPLCs()
+	{
+		if (mapdata != nullptr)
+			delete[] mapdata;
+	}
+
+	std::vector<std::vector<PlayerDPLCEntry>> DPLCData;
+
+private:
+	uint8_t* mapdata = nullptr;
+};
+
 #define patchdecl(address,data) { (void*)address, arrayptrandsize(data) }
 #define ptrdecl(address,data) { (void*)address, (void*)data }
 
@@ -535,7 +806,7 @@ struct HelperFunctions
 	// Registers a new PLC list.
 	int(__cdecl *RegisterPLCList)(const PLC *plcs, int length);
 	// Retrieves a PLC list.
-	const PLC *(__cdecl *GetPLCList)(int index, int &length);
+	const PLC* (__cdecl* GetPLCList)(int index, int& length);
 	// Sets a PLC list.
 	BOOL(__cdecl *SetPLCList)(int index, const PLC *plcs, int length);
 	// Prints a message to the log.
