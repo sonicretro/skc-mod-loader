@@ -76,7 +76,7 @@ PCSpriteTableEntry* ConvertSpriteTable_Main(MDSpriteTableEntry* sprite_table_add
 		if (iter != SpriteArtPtrs.cend())
 			sprite_table_dest->art_addr = (char*)iter->second;
 		else
-			sprite_table_dest->art_addr = start_of_VRAM;
+			sprite_table_dest->art_addr = VRAM;
 		sprite_table_dest->art_addr += 32 * (sprite_table_addr->render_info & 0x7FF);
 		++SpritesProcessed;
 		++sprite_table_dest;
@@ -100,7 +100,7 @@ PCSpriteTableEntry* __cdecl ConvertSpriteTable_P2_r(MDSpriteTableEntry* sprite_t
 	sprite_table_dest->h_cells = 1;
 	sprite_table_dest->v_pixels = 8;
 	sprite_table_dest->render_flags = 0x10000;
-	sprite_table_dest->art_addr = start_of_VRAM;
+	sprite_table_dest->art_addr = VRAM;
 	++SpritesProcessed;
 	return ConvertSpriteTable_Main(sprite_table_addr, sprite_table_dest + 1);
 }
