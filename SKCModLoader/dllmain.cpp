@@ -457,39 +457,39 @@ static void ProcessLevelINI(const IniGroup *group, const wstring &mod_dir)
 	}
 	if (group->hasKeyNonEmpty("layout"))
 	{
-		void *tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("layout"));
+		Level_Layout *tmp = reinterpret_cast<Level_Layout*>(ReadAllBytes(mod_dir + L'\\' + group->getWString("layout")));
 		if (tmp)
 			LevelPtrs[li] = tmp;
 	}
 	if (group->hasKeyNonEmpty("objects"))
 	{
-		void *tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("objects"));
+		ObjectEntry *tmp = reinterpret_cast<ObjectEntry*>(ReadAllBytes(mod_dir + L'\\' + group->getWString("objects")));
 		if (tmp)
 			SpriteLocPtrs[li] = tmp;
-		if (group->hasKeyNonEmpty("objects3") && (tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("objects3"))))
+		if (group->hasKeyNonEmpty("objects3") && (tmp = reinterpret_cast<ObjectEntry*>(ReadAllBytes(mod_dir + L'\\' + group->getWString("objects3")))))
 			SpriteLocPtrs3[li] = tmp;
 		else
 			SpriteLocPtrs3[li] = SpriteLocPtrs[li];
 	}
 	if (group->hasKeyNonEmpty("rings"))
 	{
-		void *tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("rings"));
+		Position *tmp = reinterpret_cast<Position*>(ReadAllBytes(mod_dir + L'\\' + group->getWString("rings")));
 		if (tmp)
 			RingLocPtrs[li] = tmp;
-		if (group->hasKeyNonEmpty("rings3") && (tmp = ReadAllBytes(mod_dir + L'\\' + group->getWString("rings3"))))
+		if (group->hasKeyNonEmpty("rings3") && (tmp = reinterpret_cast<Position*>(ReadAllBytes(mod_dir + L'\\' + group->getWString("rings3")))))
 			RingLocPtrs3[li] = tmp;
 		else
 			RingLocPtrs3[li] = RingLocPtrs[li];
 	}
 	if (group->hasKeyNonEmpty("sonicstart"))
 	{
-		StartPos *tmp = (StartPos *)ReadAllBytes(mod_dir + L'\\' + group->getWString("sonicstart"));
+		Position *tmp = reinterpret_cast<Position*>(ReadAllBytes(mod_dir + L'\\' + group->getWString("sonicstart")));
 		if (tmp)
 			Sonic_Start_Locations[li] = *tmp;
 	}
 	if (group->hasKeyNonEmpty("knuxstart"))
 	{
-		StartPos *tmp = (StartPos *)ReadAllBytes(mod_dir + L'\\' + group->getWString("knuxstart"));
+		Position *tmp = (Position *)ReadAllBytes(mod_dir + L'\\' + group->getWString("knuxstart"));
 		if (tmp)
 			Knux_Start_Locations[li] = *tmp;
 	}
@@ -506,11 +506,11 @@ static void ProcessPaletteINI(const IniGroup *group, const wstring &mod_dir)
 	int index = group->getInt("index");
 	PalPtr *ptr = &PalPoint[index];
 	int length;
-	uint16_t *colors = (uint16_t *)ReadAllBytes(mod_dir + L'\\' + group->getWString("filename"), &length);
+	short *colors = reinterpret_cast<short*>(ReadAllBytes(mod_dir + L'\\' + group->getWString("filename"), &length));
 	if (!colors) return;
 	ptr->Colors = colors;
-	ptr->Location = (uint16_t)group->getIntRadix("location", 16, 0xFC00);
-	ptr->Size = (uint16_t)((length / 4) - 1);
+	ptr->Location.off = static_cast<short>(group->getIntRadix("location", 16, reinterpret_cast<intptr_t>(&Normal_palette) & 0xFFFF));
+	ptr->Size = static_cast<short>((length / 4) - 1);
 }
 
 static const unordered_map<string, void(__cdecl *)(const IniGroup *, const wstring &)> exedatafuncmap = {
